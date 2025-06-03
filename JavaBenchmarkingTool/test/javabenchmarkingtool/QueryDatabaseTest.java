@@ -43,4 +43,16 @@ public class QueryDatabaseTest {
         instance.executeQuery(query, driver, url, u, p);
     }
     
+    @Test
+    public void testExecuteQueryGetAllPostgres() throws Exception {
+        String query = "SELECT * FROM CRASH_DATA";
+        String driver = "org.postgresql.Driver";
+        String url = "jdbc:postgresql://localhost:5432/pgdb";
+        String u = "info";
+        String p = "geheim";
+
+        QueryDatabase instance = new QueryDatabase();
+        instance.LOG_FILE_PATH = "/home/info/Dokumente/getAllPostgres.log";
+        instance.executeQuery(query, driver, url, u, p);
+    }
 }

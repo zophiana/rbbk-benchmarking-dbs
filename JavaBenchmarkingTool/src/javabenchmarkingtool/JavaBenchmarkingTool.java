@@ -18,7 +18,7 @@ public class JavaBenchmarkingTool {
         new SimpleDateFormat("HH:mm");
 
     public static void main(String[] args) {
-        String tsvFilePath = "../raw-data/Motor_Vehicle_Collisions_100_000.tsv"; // Updated to reflect TSV format
+        String tsvFilePath = "../raw-data/Motor_Vehicle_Collisions_1_000_000.tsv"; // Updated to reflect TSV format
         
         try {
             Class.forName("org.hsqldb.jdbcDriver");
@@ -140,7 +140,7 @@ public class JavaBenchmarkingTool {
         }
     }
 
-        private static void setStatementParameters(PreparedStatement pstmt,
+    private static void setStatementParameters(PreparedStatement pstmt,
                                              String[] fields) throws SQLException {
         // Collision ID (moved to first parameter)
         pstmt.setObject(1, parseLong(fields[23])); // id
