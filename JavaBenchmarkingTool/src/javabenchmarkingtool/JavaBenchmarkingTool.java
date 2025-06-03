@@ -92,7 +92,7 @@ public class JavaBenchmarkingTool {
                 vehicle_type_1, vehicle_type_2, vehicle_type_3, 
                 vehicle_type_4, vehicle_type_5
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 
-                     ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                     ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """;
         try (BufferedReader reader = new BufferedReader(new FileReader(tsvFilePath));
              PreparedStatement pstmt = connection.prepareStatement(insertSQL)) {
