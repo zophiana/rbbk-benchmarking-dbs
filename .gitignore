@@ -1,1 +1,4 @@
 raw-data/*.tsv
+/JavaBenchmarkingTool/nbproject/private/
+/JavaBenchmarkingTool/dist/
+/JavaBenchmarkingTool/build/
