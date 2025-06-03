@@ -16,7 +16,7 @@ public class CrashDataImporter {
         new SimpleDateFormat("HH:mm");
 
     public static void main(String[] args) {
-        String csvFilePath = "crash_data.csv"; // Update with your file path
+        String tsvFilePath = "crash_data.tsv"; // Updated to reflect TSV format
         
         try {
             Class.forName("org.hsqldb.jdbcDriver");
@@ -25,9 +25,9 @@ public class CrashDataImporter {
                 DB_URL, DB_USER, DB_PASSWORD)) {
                 
                 createTable(connection);
-                importCsvData(connection, csvFilePath);
+                importTsvData(connection, tsvFilePath);
                 
-                System.out.println("Data import completed successfully!");
+                System.out.println("TSV data import completed successfully!");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,7 +76,7 @@ public class CrashDataImporter {
         }
     }
 
-    private static void importCsvData(Connection connection, String csvFilePath) 
+    private static void importTsvData(Connection connection, String tsvFilePath)
             throws IOException, SQLException {
         
         String insertSQL = """
@@ -94,18 +94,19 @@ public class CrashDataImporter {
                      ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(csvFilePath));
+        try (BufferedReader reader = new BufferedReader(new FileReader(tsvFilePath));
              PreparedStatement pstmt = connection.prepareStatement(insertSQL)) {
             
             // Skip header row
             String headerLine = reader.readLine();
-            System.out.println("Header: " + headerLine);
+            System.out.println("TSV Header: " + headerLine);
             
             String line;
             int rowCount = 0;
+            int errorCount = 0;
             
             while ((line = reader.readLine()) != null) {
-                String[] fields = parseCsvLine(line);
+                String[] fields = parseTsvLine(line);
                 
                 if (fields.length >= 29) {
                     try {
@@ -117,18 +118,29 @@ public class CrashDataImporter {
                             System.out.println("Processed " + rowCount + " rows");
                         }
                     } catch (Exception e) {
-                        System.err.println("Error processing row " + rowCount + 
+                        errorCount++;
+                        System.err.println("Error processing row " + (rowCount + errorCount) +
                                          ": " + e.getMessage());
-                        System.err.println("Row data: " + line);
+                        if (errorCount <= 5) { // Only show first 5 errors to avoid spam
+                            System.err.println("Row data: " + line);
+                        }
                     }
+                } else {
+                    errorCount++;
+                    System.err.println("Row " + (rowCount + errorCount) +
+                                     " has insufficient columns (" + fields.length +
+                                     "/29): " + line);
                 }
             }
             
             System.out.println("Total rows imported: " + rowCount);
+            if (errorCount > 0) {
+                System.out.println("Total errors encountered: " + errorCount);
+            }
         }
     }
 
-    private static void setStatementParameters(PreparedStatement pstmt, 
+    private static void setStatementParameters(PreparedStatement pstmt,
                                              String[] fields) throws SQLException {
         // Date and Time
         pstmt.setDate(1, parseDate(fields[0]));
@@ -172,10 +184,27 @@ public class CrashDataImporter {
         pstmt.setString(29, nullIfEmpty(fields[28])); // vehicle_type_5
     }
 
-    private static String[] parseCsvLine(String line) {
-        // Simple CSV parser - handles basic cases
-        // For production use, consider using a proper CSV library like OpenCSV
-        return line.split("\t"); // Based on your data, it appears to be tab-separated
+    /**
+     * Parses a TSV (Tab-Separated Values) line.
+     * Handles basic cases where fields are separated by tabs.
+     * For more complex TSV parsing with quoted fields, consider using a library like OpenCSV.
+     */
+    private static String[] parseTsvLine(String line) {
+        if (line == null) {
+            return new String[0];
+        }
+
+        // Split on tabs and handle empty fields
+        String[] fields = line.split("\t", -1); // -1 to preserve trailing empty fields
+
+        // Trim whitespace from each field
+        for (int i = 0; i < fields.length; i++) {
+            if (fields[i] != null) {
+                fields[i] = fields[i].trim();
+            }
+        }
+
+        return fields;
     }
 
     private static String nullIfEmpty(String value) {
