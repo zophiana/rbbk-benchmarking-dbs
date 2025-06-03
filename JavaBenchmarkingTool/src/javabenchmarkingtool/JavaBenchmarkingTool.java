@@ -9,8 +9,8 @@ import java.text.SimpleDateFormat;
 
 public class JavaBenchmarkingTool {
     private static final String DB_URL = "jdbc:hsqldb:hsql://localhost/";
-    // private static final String DB_USER = "SA";
-    // private static final String DB_PASSWORD = "";
+    private static final String DB_USER = "SA";
+    private static final String DB_PASSWORD = "";
     
     private static final SimpleDateFormat DATE_FORMAT = 
         new SimpleDateFormat("MM/dd/yyyy");
@@ -24,7 +24,7 @@ public class JavaBenchmarkingTool {
             Class.forName("org.hsqldb.jdbcDriver");
             
             try (Connection connection = DriverManager.getConnection(
-                DB_URL)) {
+                DB_URL, DB_USER, DB_PASSWORD)) {
                 
                 createTable(connection);
                 importTsvData(connection, tsvFilePath);
