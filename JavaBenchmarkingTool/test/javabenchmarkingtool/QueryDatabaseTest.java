@@ -14,8 +14,7 @@ public class QueryDatabaseTest {
         String u = "SA";
         String p = "";
         
-        QueryDatabase instance = new QueryDatabase();
-        instance.LOG_FILE_PATH = "/home/info/Dokumente/getAll.log";
+        QueryDatabase instance = new QueryDatabase("/home/info/Dokumente/getAll.log");
         instance.executeQuery(query, driver, url, u, p);
     }
     
@@ -26,8 +25,7 @@ public class QueryDatabaseTest {
         String url = "jdbc:hsqldb:hsql://localhost/";
         String u = "SA";
         String p = "";
-        QueryDatabase instance = new QueryDatabase();
-        instance.LOG_FILE_PATH = "/home/info/Dokumente/orderBy.log";
+        QueryDatabase instance = new QueryDatabase("/home/info/Dokumente/orderBy.log");
         instance.executeQuery(query, driver, url, u, p);
     }
     
@@ -38,8 +36,7 @@ public class QueryDatabaseTest {
         String url = "jdbc:hsqldb:hsql://localhost/";
         String u = "SA";
         String p = "";
-        QueryDatabase instance = new QueryDatabase();
-        instance.LOG_FILE_PATH = "/home/info/Dokumente/deathLargerFive.log";
+        QueryDatabase instance = new QueryDatabase("/home/info/Dokumente/deathLargerFive.log");
         instance.executeQuery(query, driver, url, u, p);
     }
     
@@ -51,8 +48,7 @@ public class QueryDatabaseTest {
         String u = "info";
         String p = "geheim";
 
-        QueryDatabase instance = new QueryDatabase();
-        instance.LOG_FILE_PATH = "/home/info/Dokumente/getAllPostgres.log";
+        QueryDatabase instance = new QueryDatabase("/home/info/Dokumente/getAllPostgres.log");
         instance.executeQuery(query, driver, url, u, p);
     }
 }

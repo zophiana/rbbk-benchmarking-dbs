@@ -10,7 +10,16 @@ import java.util.logging.*;
 public class QueryDatabase {
 
     private static final Logger LOGGER = Logger.getLogger(QueryDatabase.class.getName());
-    String LOG_FILE_PATH = "/home/info/Dokumente/query.log";
+    private final String LOG_FILE_PATH;
+    FileHandler fh;
+
+    public QueryDatabase(String log_file_path) throws IOException {
+        this.LOG_FILE_PATH = log_file_path;
+        this.fh = new FileHandler(LOG_FILE_PATH, true); // Append to the log file
+        LOGGER.setUseParentHandlers(false);
+        fh.setFormatter(new SimpleFormatter());
+        LOGGER.addHandler(fh);
+    }
 
     public String getCurrentDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm:ss.SSS a");
@@ -18,8 +27,6 @@ public class QueryDatabase {
     }
 
     public void executeQuery(String query, String driver, String url, String u, String p) throws ClassNotFoundException, IOException {
-        setupLogger();
-
         Class.forName(driver);
 
         String start = getCurrentDate();
@@ -39,13 +46,6 @@ public class QueryDatabase {
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error executing query", e);
         }
-    }
-
-    private void setupLogger() throws IOException {
-        FileHandler fh = new FileHandler(LOG_FILE_PATH, true); // Append to the log file
-        LOGGER.setUseParentHandlers(false);
-        fh.setFormatter(new SimpleFormatter());
-        LOGGER.addHandler(fh);
     }
 
     private void logExecutionTime(String start, String end) {
