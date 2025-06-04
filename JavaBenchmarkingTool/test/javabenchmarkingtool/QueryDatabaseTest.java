@@ -4,6 +4,8 @@ import org.junit.Test;
 
 public class QueryDatabaseTest {
     
+    public static String HomePath = "/home/zophiana/Documents";
+    
     public QueryDatabaseTest() {}
     
     @Test
@@ -14,7 +16,7 @@ public class QueryDatabaseTest {
         String u = "SA";
         String p = "";
         
-        QueryDatabase instance = new QueryDatabase("/home/info/Dokumente/getAll.log");
+        QueryDatabase instance = new QueryDatabase(HomePath + "/getAll.log");
         instance.executeQuery(query, driver, url, u, p);
     }
     
@@ -25,7 +27,7 @@ public class QueryDatabaseTest {
         String url = "jdbc:hsqldb:hsql://localhost/";
         String u = "SA";
         String p = "";
-        QueryDatabase instance = new QueryDatabase("/home/info/Dokumente/orderBy.log");
+        QueryDatabase instance = new QueryDatabase(HomePath + "/orderBy.log");
         instance.executeQuery(query, driver, url, u, p);
     }
     
@@ -36,7 +38,7 @@ public class QueryDatabaseTest {
         String url = "jdbc:hsqldb:hsql://localhost/";
         String u = "SA";
         String p = "";
-        QueryDatabase instance = new QueryDatabase("/home/info/Dokumente/deathLargerFive.log");
+        QueryDatabase instance = new QueryDatabase(HomePath + "/deathLargerFive.log");
         instance.executeQuery(query, driver, url, u, p);
     }
     
@@ -48,7 +50,7 @@ public class QueryDatabaseTest {
         String u = "info";
         String p = "geheim";
 
-        QueryDatabase instance = new QueryDatabase("/home/info/Dokumente/getAllPostgres.log");
+        QueryDatabase instance = new QueryDatabase(HomePath + "/getAllPostgres.log");
         instance.executeQuery(query, driver, url, u, p);
     }
 }
