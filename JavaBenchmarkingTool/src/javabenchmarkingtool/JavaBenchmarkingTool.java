@@ -6,11 +6,14 @@ import java.io.IOException;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.List;
 
 public class JavaBenchmarkingTool {
-    private static final String DB_URL = "jdbc:hsqldb:hsql://localhost/";
-    private static final String DB_USER = "SA";
-    private static final String DB_PASSWORD = "";
+    private static final String DB_URL = "jdbc:postgresql://localhost:5432/1m";
+    private static final String DB_USER = "info";
+    private static final String DB_PASSWORD = "geheim";
+    private static final String DB_DRIVER = "org.postgresql.Driver";
     
     private static final SimpleDateFormat DATE_FORMAT = 
         new SimpleDateFormat("MM/dd/yyyy");
@@ -18,23 +21,67 @@ public class JavaBenchmarkingTool {
         new SimpleDateFormat("HH:mm");
 
     public static void main(String[] args) {
+        insert();
+    }
+    
+    private static void insert() {
         String tsvFilePath = "../raw-data/Motor_Vehicle_Collisions_1_000_000.tsv"; // Updated to reflect TSV format
         
         try {
-            Class.forName("org.hsqldb.jdbcDriver");
-            
+            Class.forName(DB_DRIVER);
+
             try (Connection connection = DriverManager.getConnection(
                 DB_URL, DB_USER, DB_PASSWORD)) {
-                
+
                 createTable(connection);
                 importTsvData(connection, tsvFilePath);
-                
+
                 System.out.println("TSV data import completed successfully!");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+        
+    private static void benchmark() {
+        List<String> queries = Arrays.asList(
+            """
+            SELECT * 
+              FROM crash_data 
+             WHERE id = 4455765;
+            """,
+            """
+            SELECT * 
+              FROM crash_data 
+             WHERE crash_date BETWEEN '2021-09-01' AND '2021-09-30';
+            """
+        );
+
+        try {
+            // run each query 50× on both Postgres and HSQLDB
+            QueryDatabase.benchmark(
+                "benchmark_log.txt",
+                queries,
+                50,
+                new QueryDatabase.DbConfig(
+                    "Postgres",
+                    "org.postgresql.Driver",
+                    "jdbc:postgresql://localhost:5432/1m",
+                    "info",
+                    "geheim"
+                ),
+                new QueryDatabase.DbConfig(
+                    "HSQLDB",
+                    "org.hsqldb.jdbc.JDBCDriver",
+                    "jdbc:hsqldb:hsql://localhost/",
+                    "sa",
+                    ""
+                )
+            );
+        } catch (ClassNotFoundException | IOException e) {
+        }
+    }
+
 
     private static void createTable(Connection connection) throws SQLException {
         String createTableSQL = """
