@@ -8,30 +8,42 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
+import javabenchmarkingtool.QueryDatabase.DbConfig;
 
 public class JavaBenchmarkingTool {
-    private static final String DB_URL = "jdbc:postgresql://localhost:5432/1m";
-    private static final String DB_USER = "info";
-    private static final String DB_PASSWORD = "geheim";
-    private static final String DB_DRIVER = "org.postgresql.Driver";
-    
-    private static final SimpleDateFormat DATE_FORMAT = 
-        new SimpleDateFormat("MM/dd/yyyy");
-    private static final SimpleDateFormat TIME_FORMAT = 
-        new SimpleDateFormat("HH:mm");
+
+    private static final DbConfig Postgres = new QueryDatabase.DbConfig(
+            "Postgres",
+            "org.postgresql.Driver",
+            "jdbc:postgresql://localhost:5432/1m",
+            "info",
+            "geheim"
+    );
+    private static final DbConfig HSQLDB = new QueryDatabase.DbConfig(
+            "HSQLDB",
+            "org.hsqldb.jdbc.JDBCDriver",
+            "jdbc:hsqldb:hsql://localhost/",
+            "sa",
+            ""
+    );
+
+    private static final SimpleDateFormat DATE_FORMAT
+            = new SimpleDateFormat("MM/dd/yyyy");
+    private static final SimpleDateFormat TIME_FORMAT
+            = new SimpleDateFormat("HH:mm");
 
     public static void main(String[] args) {
-        insert();
+        insert(Postgres);
     }
-    
-    private static void insert() {
+
+    private static void insert(DbConfig db) {
         String tsvFilePath = "../raw-data/Motor_Vehicle_Collisions_1_000_000.tsv"; // Updated to reflect TSV format
-        
+
         try {
-            Class.forName(DB_DRIVER);
+            Class.forName(db.driver);
 
             try (Connection connection = DriverManager.getConnection(
-                DB_URL, DB_USER, DB_PASSWORD)) {
+                    db.url, db.user, db.pass)) {
 
                 createTable(connection);
                 importTsvData(connection, tsvFilePath);
@@ -42,20 +54,19 @@ public class JavaBenchmarkingTool {
             e.printStackTrace();
         }
     }
-        
+
     private static void benchmark() {
         List<String> queries = Arrays.asList(
-            """
+                """
             SELECT * 
               FROM crash_data 
              WHERE id = 4455765;
             """,
-            """
+                """
             SELECT * 
               FROM crash_data 
              WHERE crash_date BETWEEN '2021-09-01' AND '2021-09-30';
             """,
-
                 """
                 SELECT 
                     COUNT(id) AS total_crashes_2024
@@ -88,7 +99,7 @@ public class JavaBenchmarkingTool {
                     (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table
                 FROM crash_data;
                 """,
-                                """
+                """
                 SELECT 
                   borough, 
                   COUNT(id) AS total_crashes, 
@@ -187,28 +198,15 @@ public class JavaBenchmarkingTool {
         try {
             // run each query 50× on both Postgres and HSQLDB
             QueryDatabase.benchmark(
-                "benchmark_log.txt",
-                queries,
-                50,
-                new QueryDatabase.DbConfig(
-                    "Postgres",
-                    "org.postgresql.Driver",
-                    "jdbc:postgresql://localhost:5432/1m",
-                    "info",
-                    "geheim"
-                ),
-                new QueryDatabase.DbConfig(
-                    "HSQLDB",
-                    "org.hsqldb.jdbc.JDBCDriver",
-                    "jdbc:hsqldb:hsql://localhost/",
-                    "sa",
-                    ""
-                )
+                    "benchmark_log.txt",
+                    queries,
+                    50,
+                    Postgres,
+                    HSQLDB
             );
         } catch (ClassNotFoundException | IOException e) {
         }
     }
-
 
     private static void createTable(Connection connection) throws SQLException {
         String createTableSQL = """
@@ -244,7 +242,7 @@ public class JavaBenchmarkingTool {
                 vehicle_type_5 VARCHAR(50)
             )
             """;
-        
+
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(createTableSQL);
             System.out.println("Table created successfully!");
@@ -268,45 +266,44 @@ public class JavaBenchmarkingTool {
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 
                      ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """;
-        try (BufferedReader reader = new BufferedReader(new FileReader(tsvFilePath));
-             PreparedStatement pstmt = connection.prepareStatement(insertSQL)) {
-            
+        try (BufferedReader reader = new BufferedReader(new FileReader(tsvFilePath)); PreparedStatement pstmt = connection.prepareStatement(insertSQL)) {
+
             // Skip header row
             String headerLine = reader.readLine();
             System.out.println("TSV Header: " + headerLine);
-            
+
             String line;
             int rowCount = 0;
             int errorCount = 0;
-            
+
             while ((line = reader.readLine()) != null) {
                 String[] fields = parseTsvLine(line);
-                
+
                 if (fields.length >= 29) {
                     try {
                         setStatementParameters(pstmt, fields);
                         pstmt.executeUpdate();
                         rowCount++;
-                        
+
                         if (rowCount % 100 == 0) {
                             System.out.println("Processed " + rowCount + " rows");
                         }
                     } catch (Exception e) {
                         errorCount++;
-                        System.err.println("Error processing row " + (rowCount + errorCount) +
-                                         ": " + e.getMessage());
+                        System.err.println("Error processing row " + (rowCount + errorCount)
+                                + ": " + e.getMessage());
                         if (errorCount <= 5) { // Only show first 5 errors to avoid spam
                             System.err.println("Row data: " + line);
                         }
                     }
                 } else {
                     errorCount++;
-                    System.err.println("Row " + (rowCount + errorCount) +
-                                     " has insufficient columns (" + fields.length +
-                                     "/29): " + line);
+                    System.err.println("Row " + (rowCount + errorCount)
+                            + " has insufficient columns (" + fields.length
+                            + "/29): " + line);
                 }
             }
-            
+
             System.out.println("Total rows imported: " + rowCount);
             if (errorCount > 0) {
                 System.out.println("Total errors encountered: " + errorCount);
@@ -315,7 +312,7 @@ public class JavaBenchmarkingTool {
     }
 
     private static void setStatementParameters(PreparedStatement pstmt,
-                                             String[] fields) throws SQLException {
+            String[] fields) throws SQLException {
         // Collision ID (moved to first parameter)
         pstmt.setObject(1, parseLong(fields[23])); // id
 
@@ -359,9 +356,9 @@ public class JavaBenchmarkingTool {
     }
 
     /**
-     * Parses a TSV (Tab-Separated Values) line.
-     * Handles basic cases where fields are separated by tabs.
-     * For more complex TSV parsing with quoted fields, consider using a library like OpenCSV.
+     * Parses a TSV (Tab-Separated Values) line. Handles basic cases where
+     * fields are separated by tabs. For more complex TSV parsing with quoted
+     * fields, consider using a library like OpenCSV.
      */
     private static String[] parseTsvLine(String line) {
         if (line == null) {
