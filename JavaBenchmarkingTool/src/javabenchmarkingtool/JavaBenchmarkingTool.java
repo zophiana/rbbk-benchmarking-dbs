@@ -54,7 +54,134 @@ public class JavaBenchmarkingTool {
             SELECT * 
               FROM crash_data 
              WHERE crash_date BETWEEN '2021-09-01' AND '2021-09-30';
-            """
+            """,
+
+                """
+                SELECT 
+                    COUNT(id) AS total_crashes_2024
+                FROM crash_data
+                WHERE EXTRACT(YEAR FROM crash_date) = 2024;
+                """,
+                """
+                SELECT 
+                    borough,
+                    COUNT(id) AS total_crashes
+                FROM crash_data
+                GROUP BY borough
+                ORDER BY total_crashes DESC;
+                """,
+                """
+                SELECT 
+                    crash_time,
+                    COUNT(id) AS total_crashes
+                FROM crash_data
+                WHERE crash_time != '00:00:00'
+                GROUP BY crash_time
+                ORDER BY total_crashes DESC
+                LIMIT 1;
+                """,
+                """
+                SELECT 
+                    id,
+                    crash_date,
+                    crash_time,
+                    (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table
+                FROM crash_data;
+                """,
+                                """
+                SELECT 
+                  borough, 
+                  COUNT(id) AS total_crashes, 
+                  (
+                    SELECT 
+                      MAX(persons_injured) 
+                    FROM 
+                      crash_data c2 
+                    WHERE 
+                      c2.borough = c1.borough
+                  ) AS max_injured, 
+                  (
+                    SELECT 
+                      MAX(crash_date) 
+                    FROM 
+                      crash_data c3 
+                    WHERE 
+                      c3.borough = c1.borough
+                  ) AS most_recent_crash_date, 
+                  (
+                    SELECT 
+                      vehicle_type_1 
+                    FROM 
+                      crash_data c4 
+                    WHERE 
+                      c4.borough = c1.borough 
+                    ORDER BY 
+                      crash_date DESC 
+                    LIMIT 
+                      1
+                  ) AS most_recent_vehicle_type 
+                FROM 
+                  crash_data c1 
+                WHERE 
+                  borough IS NOT NULL 
+                GROUP BY 
+                  borough 
+                ORDER BY 
+                  total_crashes DESC;
+                """,
+                """
+                SELECT 
+                                           id,
+                                           crash_date,
+                                           crash_time,
+                                           borough,
+                                           zip_code,
+                                           latitude,
+                                           longitude,
+                                           location,
+                                           on_street_name,
+                                           cross_street_name,
+                                           off_street_name,
+                                           persons_injured,
+                                           persons_killed,
+                                           pedestrians_injured,
+                                           pedestrians_killed,
+                                           cyclists_injured,
+                                           cyclists_killed,
+                                           motorists_injured,
+                                           motorists_killed,
+                                           contributing_factor_1,
+                                           contributing_factor_2,
+                                           contributing_factor_3,
+                                           contributing_factor_4,
+                                           contributing_factor_5,
+                                           vehicle_type_1,
+                                           vehicle_type_2,
+                                           vehicle_type_3,
+                                           vehicle_type_4,
+                                           vehicle_type_5,
+                                           ROUND(latitude, 4) AS rounded_latitude,
+                                           ROUND(longitude, 4) AS rounded_longitude,
+                                           CASE 
+                                               WHEN persons_injured > 0 THEN 'Injured'
+                                               ELSE 'No Injuries'
+                                           END AS injury_status,
+                                           LENGTH(location) AS location_length,
+                                           LENGTH(on_street_name) AS on_street_name_length,
+                                           LENGTH(cross_street_name) AS cross_street_name_length,
+                                           UPPER(borough) AS upper_borough,
+                                           CONCAT(on_street_name, ' & ', cross_street_name) AS street_intersection,
+                                           SIN(RADIANS(latitude)) AS sin_latitude,
+                                           COS(RADIANS(longitude)) AS cos_longitude
+                                       FROM crash_data
+                                       WHERE borough IN ('BROOKLYN', 'QUEENS', 'MANHATTAN', 'BRONX', 'STATEN ISLAND')
+                                         AND crash_date BETWEEN '2015-01-01' AND '2025-12-31'
+                                         AND persons_injured > 0
+                                         AND zip_code LIKE '1%'
+                                         AND latitude BETWEEN 40.5 AND 41.5
+                                         AND longitude BETWEEN -74.5 AND -73.5
+                                       ORDER BY crash_date DESC, crash_time DESC, borough, zip_code;
+                """
         );
 
         try {
