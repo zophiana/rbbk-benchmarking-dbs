@@ -6,7 +6,17 @@ import java.sql.*;
 import java.util.*;
 import java.util.stream.*;
 
+/**
+ * Utility for benchmarking a set of queries against multiple databases. You can
+ * choose between SEQUENTIAL (A×N, B×N, C×N…) and ROUND_ROBIN (A,B,C,A,B,C… N
+ * times).
+ */
 public class QueryDatabase {
+
+  public enum ScheduleMode {
+    SEQUENTIAL,
+    ROUND_ROBIN
+  }
 
   public static class DbConfig {
 
@@ -29,16 +39,20 @@ public class QueryDatabase {
 
   // timeout constants: 300 s == 5 minutes
   private static final int TIMEOUT_SEC = 300;
-  private static final long TIMEOUT_MS = TIMEOUT_SEC * 1000L;
+  private static final long TIMEOUT_MS = TIMEOUT_SEC * 1_000L;
 
   /**
-   * For each DbConfig, loads its driver, opens a connection, then benchmarks
-   * all queries in round-robin order N times.
+   * @param logFilePath Path to append logs
+   * @param queries List of SQL strings
+   * @param runs How many times to run each SQL
+   * @param mode SEQUENTIAL or ROUND_ROBIN
+   * @param configs One or more DbConfig
    */
   public static void benchmark(
           String logFilePath,
           List<String> queries,
           int runs,
+          ScheduleMode mode,
           DbConfig... configs
   ) throws ClassNotFoundException, IOException {
     // 1) Load all drivers
@@ -51,7 +65,8 @@ public class QueryDatabase {
               "INFO: ===== Benchmarking " + cfg.name + " =====");
       try (Connection conn = DriverManager.getConnection(
               cfg.url, cfg.user, cfg.pass)) {
-        benchmarkDatabase(conn, cfg, queries, runs, logFilePath);
+        benchmarkDatabase(
+                conn, cfg, queries, runs, mode, logFilePath);
       } catch (SQLException e) {
         appendLog(logFilePath,
                 "SEVERE: [" + cfg.name + "] Connection error: "
@@ -69,17 +84,15 @@ public class QueryDatabase {
           DbConfig cfg,
           List<String> queries,
           int runs,
+          ScheduleMode mode,
           String logFilePath
   ) throws IOException {
     StatsCollector collector = new StatsCollector(queries, TIMEOUT_MS);
 
-    // Generate round-robin sequence: A,B,C, A,B,C, … (runs times)
-    List<String> sequence = IntStream.range(0, runs)
-            .boxed()
-            .flatMap(i -> queries.stream())
-            .collect(Collectors.toList());
+    // build the exact firing sequence
+    List<String> sequence = makeSequence(queries, runs, mode);
 
-    // Execute each item in the sequence
+    // execute each in that order
     for (String sql : sequence) {
       try {
         ExecutionResult res = executeSingle(conn, sql);
@@ -169,9 +182,29 @@ public class QueryDatabase {
   }
 
   /**
-   * Runs one SQL, applying the per-query timeout. Returns an ExecutionResult
-   * indicating time or timeout.
+   * Builds either A×N, B×N, C×N… or A,B,C,A,B,C…(N times)
    */
+  private static List<String> makeSequence(
+          List<String> queries,
+          int runs,
+          ScheduleMode mode
+  ) {
+    switch (mode) {
+      case SEQUENTIAL:
+        return queries.stream()
+                .flatMap(q
+                        -> IntStream.range(0, runs)
+                        .mapToObj(i -> q))
+                .collect(Collectors.toList());
+      case ROUND_ROBIN:
+      default:
+        return IntStream.range(0, runs)
+                .boxed()
+                .flatMap(i -> queries.stream())
+                .collect(Collectors.toList());
+    }
+  }
+
   private static ExecutionResult executeSingle(
           Connection conn,
           String query
