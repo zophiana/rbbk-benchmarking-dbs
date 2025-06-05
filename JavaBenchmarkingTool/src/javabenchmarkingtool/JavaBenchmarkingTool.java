@@ -27,6 +27,13 @@ public class JavaBenchmarkingTool {
             "sa",
             ""
     );
+    private static final DbConfig SQLite = new QueryDatabase.DbConfig(
+            "SQLite",
+            "org.sqlite.JDBC",
+            "jdbc:sqlite:crimes.sql",
+            "",
+            ""
+    );
 
     private static final SimpleDateFormat DATE_FORMAT
             = new SimpleDateFormat("MM/dd/yyyy");
