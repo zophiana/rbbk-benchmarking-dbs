@@ -8,6 +8,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javabenchmarkingtool.QueryDatabase.DbConfig;
 import javabenchmarkingtool.QueryDatabase.ScheduleMode;
 
@@ -35,18 +37,241 @@ public class JavaBenchmarkingTool {
             ""
     );
 
+    private static final int numberOfQueries = 50;
+    
+    private static final String crashByIdQuery = """
+        SELECT *
+          FROM crash_data
+         WHERE id = 4455765;
+        """;
+
+    private static final String crashSept2021Query = """
+        SELECT *
+          FROM crash_data
+         WHERE crash_date BETWEEN '2021-09-01' AND '2021-09-30';
+        """;
+
+    private static final String totalCrashes2024QuerySQLiteOnly = """
+        SELECT
+            COUNT(id) AS total_crashes_2024
+        FROM crash_data
+        WHERE strftime('%Y', crash_date) = '2024';
+        """;
+
+    private static final String totalCrashes2024Query = """
+        SELECT
+            COUNT(id) AS total_crashes_2024
+        FROM crash_data
+        WHERE EXTRACT(YEAR FROM crash_date) = 2024;
+        """;
+
+    private static final String crashesByBoroughQuery = """
+        SELECT
+            borough,
+            COUNT(id) AS total_crashes
+        FROM crash_data
+        GROUP BY borough
+        ORDER BY total_crashes DESC;
+        """;
+
+    private static final String peakCrashTimeQuery = """
+        SELECT
+            crash_time,
+            COUNT(id) AS total_crashes
+        FROM crash_data
+        WHERE crash_time != '00:00:00'
+        GROUP BY crash_time
+        ORDER BY total_crashes DESC
+        LIMIT 1;
+        """;
+
+    private static final String selectWithTotalCountQuery = """
+        SELECT
+            id,
+            crash_date,
+            crash_time,
+            (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table
+        FROM crash_data;
+        """;
+
+    private static final String boroughStatsQueryNoHSQLDB = """
+        SELECT
+            borough,
+            COUNT(id) AS total_crashes,
+            (SELECT MAX(persons_injured)
+               FROM crash_data c2
+              WHERE c2.borough = c1.borough
+            ) AS max_injured,
+            (SELECT MAX(crash_date)
+               FROM crash_data c3
+              WHERE c3.borough = c1.borough
+            ) AS most_recent_crash_date,
+            (SELECT vehicle_type_1
+               FROM crash_data c4
+              WHERE c4.borough = c1.borough
+              ORDER BY crash_date DESC
+              LIMIT 1
+            ) AS most_recent_vehicle_type
+        FROM crash_data c1
+       WHERE borough IS NOT NULL
+       GROUP BY borough
+       ORDER BY total_crashes DESC;
+        """;
+
+    private static final String detailedCrashDataQueryNoHSQLDB = """
+        SELECT
+            id,
+            crash_date,
+            crash_time,
+            borough,
+            zip_code,
+            latitude,
+            longitude,
+            location,
+            on_street_name,
+            cross_street_name,
+            off_street_name,
+            persons_injured,
+            persons_killed,
+            pedestrians_injured,
+            pedestrians_killed,
+            cyclists_injured,
+            cyclists_killed,
+            motorists_injured,
+            motorists_killed,
+            contributing_factor_1,
+            contributing_factor_2,
+            contributing_factor_3,
+            contributing_factor_4,
+            contributing_factor_5,
+            vehicle_type_1,
+            vehicle_type_2,
+            vehicle_type_3,
+            vehicle_type_4,
+            vehicle_type_5,
+            ROUND(latitude, 4) AS rounded_latitude,
+            ROUND(longitude, 4) AS rounded_longitude,
+            CASE
+                WHEN persons_injured > 0 THEN 'Injured'
+                ELSE 'No Injuries'
+            END AS injury_status,
+            LENGTH(location) AS location_length,
+            LENGTH(on_street_name) AS on_street_name_length,
+            LENGTH(cross_street_name) AS cross_street_name_length,
+            UPPER(borough) AS upper_borough,
+            CONCAT(on_street_name, ' & ', cross_street_name) AS street_intersection,
+            SIN(RADIANS(latitude)) AS sin_latitude,
+            COS(RADIANS(longitude)) AS cos_longitude
+        FROM crash_data
+       WHERE borough IN ('BROOKLYN', 'QUEENS', 'MANHATTAN', 'BRONX', 'STATEN ISLAND')
+         AND crash_date BETWEEN '2015-01-01' AND '2025-12-31'
+         AND persons_injured > 0
+         AND zip_code LIKE '1%'
+         AND latitude BETWEEN 40.5 AND 41.5
+         AND longitude BETWEEN -74.5 AND -73.5
+       ORDER BY crash_date DESC, crash_time DESC, borough, zip_code;
+        """;
+
+    private static final List<String> postgresQueries = Arrays.asList(
+        crashByIdQuery,
+        crashSept2021Query,
+        totalCrashes2024Query,
+        crashesByBoroughQuery,
+        peakCrashTimeQuery,
+        selectWithTotalCountQuery,
+        boroughStatsQueryNoHSQLDB,
+        detailedCrashDataQueryNoHSQLDB
+    );
+
+    private static final List<String> sqliteQueries = Arrays.asList(
+        crashByIdQuery,
+        crashSept2021Query,
+        totalCrashes2024QuerySQLiteOnly,
+        crashesByBoroughQuery,
+        peakCrashTimeQuery,
+        selectWithTotalCountQuery,
+        boroughStatsQueryNoHSQLDB,
+        detailedCrashDataQueryNoHSQLDB
+    );
+
+    private static final List<String> hsqldbQueries = Arrays.asList(
+        crashByIdQuery,
+        crashSept2021Query,
+        totalCrashes2024Query,
+        crashesByBoroughQuery,
+        peakCrashTimeQuery,
+        selectWithTotalCountQuery
+    );
+
     private static final SimpleDateFormat DATE_FORMAT
             = new SimpleDateFormat("MM/dd/yyyy");
     private static final SimpleDateFormat TIME_FORMAT
             = new SimpleDateFormat("HH:mm");
 
-    public static void main(String[] args) {
-        insert(Postgres);
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+
+      
+        insert(Postgres, "../raw-data/Motor_Vehicle_Collisions_100_000.tsv");
+        insert(SQLite, "../raw-data/Motor_Vehicle_Collisions_100_000.tsv");
+        insert(HSQLDB, "../raw-data/Motor_Vehicle_Collisions_100_000.tsv");
+
+        runBenchBatch(ScheduleMode.SEQUENTIAL);
+        runBenchBatch(ScheduleMode.ROUND_ROBIN);
+
+        insert(Postgres, "../raw-data/Motor_Vehicle_Collisions_200_000.tsv");
+        insert(SQLite, "../raw-data/Motor_Vehicle_Collisions_200_000.tsv");
+        insert(HSQLDB, "../raw-data/Motor_Vehicle_Collisions_200_000.tsv");
+
+        runBenchBatch(ScheduleMode.SEQUENTIAL);
+        runBenchBatch(ScheduleMode.ROUND_ROBIN);
+
+        insert(Postgres, "../raw-data/Motor_Vehicle_Collisions_600_000.tsv");
+        insert(SQLite, "../raw-data/Motor_Vehicle_Collisions_600_000.tsv");
+        insert(HSQLDB, "../raw-data/Motor_Vehicle_Collisions_600_000.tsv");
+
+        runBenchBatch(ScheduleMode.SEQUENTIAL);
+        runBenchBatch(ScheduleMode.ROUND_ROBIN);
+
+        insert(Postgres, "../raw-data/Motor_Vehicle_Collisions_900_000.2.tsv");
+        insert(SQLite, "../raw-data/Motor_Vehicle_Collisions_900_000.2.tsv");
+        insert(HSQLDB, "../raw-data/Motor_Vehicle_Collisions_900_000.2.tsv");
+
+        runBenchBatch(ScheduleMode.SEQUENTIAL);
+        runBenchBatch(ScheduleMode.ROUND_ROBIN);
+
     }
 
-    private static void insert(DbConfig db) {
-        String tsvFilePath = "../raw-data/Motor_Vehicle_Collisions_1_000_000.tsv"; // Updated to reflect TSV format
+    private static void runBenchBatch(ScheduleMode mode) {
+      try {
+        QueryDatabase.benchmark(
+                "benchmark_log.pg.txt",
+                postgresQueries,
+                numberOfQueries,
+                mode,
+                Postgres
+        );
+        QueryDatabase.benchmark(
+                "benchmark_log.lite.txt",
+                sqliteQueries,
+                numberOfQueries,
+                mode,
+                SQLite
+        );
+        QueryDatabase.benchmark(
+                "benchmark_log.hsql.txt",
+                hsqldbQueries,
+                numberOfQueries,
+                mode,
+                HSQLDB
+        );
+      } catch (ClassNotFoundException ex) {
+        Logger.getLogger(JavaBenchmarkingTool.class.getName()).log(Level.SEVERE, null, ex);
+      } catch (IOException ex) {
+        Logger.getLogger(JavaBenchmarkingTool.class.getName()).log(Level.SEVERE, null, ex);
+      }
+    }
 
+    private static void insert(DbConfig db, String tsvFilePath) {
         try {
             Class.forName(db.driver);
 
@@ -60,166 +285,6 @@ public class JavaBenchmarkingTool {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    private static void benchmark() {
-        List<String> queries = Arrays.asList(
-                """
-            SELECT
-                    COUNT(id) AS total_crashes_2024
-                FROM crash_data
-                WHERE strftime('%Y', crash_date) = '2024';
-            """,
-                """
-            SELECT * 
-              FROM crash_data 
-             WHERE id = 4455765;
-            """,
-                """
-            SELECT * 
-              FROM crash_data 
-             WHERE crash_date BETWEEN '2021-09-01' AND '2021-09-30';
-            """,
-                """
-                SELECT 
-                    COUNT(id) AS total_crashes_2024
-                FROM crash_data
-                WHERE EXTRACT(YEAR FROM crash_date) = 2024;
-                """,
-                """
-                SELECT 
-                    borough,
-                    COUNT(id) AS total_crashes
-                FROM crash_data
-                GROUP BY borough
-                ORDER BY total_crashes DESC;
-                """,
-                """
-                SELECT 
-                    crash_time,
-                    COUNT(id) AS total_crashes
-                FROM crash_data
-                WHERE crash_time != '00:00:00'
-                GROUP BY crash_time
-                ORDER BY total_crashes DESC
-                LIMIT 1;
-                """,
-                """
-                SELECT 
-                    id,
-                    crash_date,
-                    crash_time,
-                    (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table
-                FROM crash_data;
-                """,
-                """
-                SELECT 
-                  borough, 
-                  COUNT(id) AS total_crashes, 
-                  (
-                    SELECT 
-                      MAX(persons_injured) 
-                    FROM 
-                      crash_data c2 
-                    WHERE 
-                      c2.borough = c1.borough
-                  ) AS max_injured, 
-                  (
-                    SELECT 
-                      MAX(crash_date) 
-                    FROM 
-                      crash_data c3 
-                    WHERE 
-                      c3.borough = c1.borough
-                  ) AS most_recent_crash_date, 
-                  (
-                    SELECT 
-                      vehicle_type_1 
-                    FROM 
-                      crash_data c4 
-                    WHERE 
-                      c4.borough = c1.borough 
-                    ORDER BY 
-                      crash_date DESC 
-                    LIMIT 
-                      1
-                  ) AS most_recent_vehicle_type 
-                FROM 
-                  crash_data c1 
-                WHERE 
-                  borough IS NOT NULL 
-                GROUP BY 
-                  borough 
-                ORDER BY 
-                  total_crashes DESC;
-                """,
-                """
-                SELECT 
-                                           id,
-                                           crash_date,
-                                           crash_time,
-                                           borough,
-                                           zip_code,
-                                           latitude,
-                                           longitude,
-                                           location,
-                                           on_street_name,
-                                           cross_street_name,
-                                           off_street_name,
-                                           persons_injured,
-                                           persons_killed,
-                                           pedestrians_injured,
-                                           pedestrians_killed,
-                                           cyclists_injured,
-                                           cyclists_killed,
-                                           motorists_injured,
-                                           motorists_killed,
-                                           contributing_factor_1,
-                                           contributing_factor_2,
-                                           contributing_factor_3,
-                                           contributing_factor_4,
-                                           contributing_factor_5,
-                                           vehicle_type_1,
-                                           vehicle_type_2,
-                                           vehicle_type_3,
-                                           vehicle_type_4,
-                                           vehicle_type_5,
-                                           ROUND(latitude, 4) AS rounded_latitude,
-                                           ROUND(longitude, 4) AS rounded_longitude,
-                                           CASE 
-                                               WHEN persons_injured > 0 THEN 'Injured'
-                                               ELSE 'No Injuries'
-                                           END AS injury_status,
-                                           LENGTH(location) AS location_length,
-                                           LENGTH(on_street_name) AS on_street_name_length,
-                                           LENGTH(cross_street_name) AS cross_street_name_length,
-                                           UPPER(borough) AS upper_borough,
-                                           CONCAT(on_street_name, ' & ', cross_street_name) AS street_intersection,
-                                           SIN(RADIANS(latitude)) AS sin_latitude,
-                                           COS(RADIANS(longitude)) AS cos_longitude
-                                       FROM crash_data
-                                       WHERE borough IN ('BROOKLYN', 'QUEENS', 'MANHATTAN', 'BRONX', 'STATEN ISLAND')
-                                         AND crash_date BETWEEN '2015-01-01' AND '2025-12-31'
-                                         AND persons_injured > 0
-                                         AND zip_code LIKE '1%'
-                                         AND latitude BETWEEN 40.5 AND 41.5
-                                         AND longitude BETWEEN -74.5 AND -73.5
-                                       ORDER BY crash_date DESC, crash_time DESC, borough, zip_code;
-                """
-        );
-
-        try {
-            // run each query 50× on both Postgres and HSQLDB
-            QueryDatabase.benchmark(
-                    "benchmark_log.txt",
-                    queries,
-                    50,
-                    ScheduleMode.SEQUENTIAL,
-                    Postgres,
-                    HSQLDB
-            );
-        } catch (ClassNotFoundException | IOException e) {
         }
     }
 

@@ -38,7 +38,7 @@ public class QueryDatabase {
   }
 
   // timeout constants: 300 s == 5 minutes
-  private static final int TIMEOUT_SEC = 300;
+  private static final int TIMEOUT_SEC = 60;
   private static final long TIMEOUT_MS = TIMEOUT_SEC * 1_000L;
 
   /**
@@ -63,6 +63,8 @@ public class QueryDatabase {
     for (DbConfig cfg : configs) {
       appendLog(logFilePath,
               "INFO: ===== Benchmarking " + cfg.name + " =====");
+      appendLog(logFilePath,
+              "INFO: ===== Benchmarking Mode: " + mode + " =====");
       try (Connection conn = DriverManager.getConnection(
               cfg.url, cfg.user, cfg.pass)) {
         benchmarkDatabase(
