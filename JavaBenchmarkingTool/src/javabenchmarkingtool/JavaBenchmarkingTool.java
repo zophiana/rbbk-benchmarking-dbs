@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
 import javabenchmarkingtool.QueryDatabase.DbConfig;
+import javabenchmarkingtool.QueryDatabase.ScheduleMode;
 
 public class JavaBenchmarkingTool {
 
@@ -201,6 +202,7 @@ public class JavaBenchmarkingTool {
                     "benchmark_log.txt",
                     queries,
                     50,
+                    ScheduleMode.SEQUENTIAL,
                     Postgres,
                     HSQLDB
             );
