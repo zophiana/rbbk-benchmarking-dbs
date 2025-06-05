@@ -66,6 +66,12 @@ public class JavaBenchmarkingTool {
     private static void benchmark() {
         List<String> queries = Arrays.asList(
                 """
+            SELECT
+                    COUNT(id) AS total_crashes_2024
+                FROM crash_data
+                WHERE strftime('%Y', crash_date) = '2024';
+            """,
+                """
             SELECT * 
               FROM crash_data 
              WHERE id = 4455765;
