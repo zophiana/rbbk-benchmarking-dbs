@@ -1,0 +1,963 @@
+INFO: ===== Benchmarking HSQLDB =====
+INFO: ===== Benchmarking Mode: SEQUENTIAL =====
+INFO: [HSQLDB] SQL: "SELECT *
+  FROM crash_data
+ WHERE id = 4455765;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 0ms
+INFO: [HSQLDB] Last run: 0ms
+INFO: [HSQLDB] Min time: 0ms
+INFO: [HSQLDB] Max time: 0ms
+INFO: [HSQLDB] Avg time: 0,00ms
+INFO: [HSQLDB] Median: 0,00ms
+
+INFO: [HSQLDB] SQL: "SELECT *
+  FROM crash_data
+ WHERE crash_date BETWEEN '2021-09-01' AND '2021-09-30';
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 9896
+INFO: [HSQLDB] First run: 72ms
+INFO: [HSQLDB] Last run: 125ms
+INFO: [HSQLDB] Min time: 72ms
+INFO: [HSQLDB] Max time: 125ms
+INFO: [HSQLDB] Avg time: 79,50ms
+INFO: [HSQLDB] Median: 76,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    COUNT(id) AS total_crashes_2024
+FROM crash_data
+WHERE EXTRACT(YEAR FROM crash_date) = 2024;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 63ms
+INFO: [HSQLDB] Last run: 69ms
+INFO: [HSQLDB] Min time: 63ms
+INFO: [HSQLDB] Max time: 69ms
+INFO: [HSQLDB] Avg time: 65,42ms
+INFO: [HSQLDB] Median: 66,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    borough,
+    COUNT(id) AS total_crashes
+FROM crash_data
+GROUP BY borough
+ORDER BY total_crashes DESC;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 6
+INFO: [HSQLDB] First run: 68ms
+INFO: [HSQLDB] Last run: 73ms
+INFO: [HSQLDB] Min time: 68ms
+INFO: [HSQLDB] Max time: 73ms
+INFO: [HSQLDB] Avg time: 69,98ms
+INFO: [HSQLDB] Median: 70,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    crash_time,
+    COUNT(id) AS total_crashes
+FROM crash_data
+WHERE crash_time != '00:00:00'
+GROUP BY crash_time
+ORDER BY total_crashes DESC
+LIMIT 1;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 134ms
+INFO: [HSQLDB] Last run: 142ms
+INFO: [HSQLDB] Min time: 134ms
+INFO: [HSQLDB] Max time: 142ms
+INFO: [HSQLDB] Avg time: 136,44ms
+INFO: [HSQLDB] Median: 136,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    id,
+    crash_date,
+    crash_time,
+    (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table
+FROM crash_data;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 300000
+INFO: [HSQLDB] First run: 145ms
+INFO: [HSQLDB] Last run: 235ms
+INFO: [HSQLDB] Min time: 145ms
+INFO: [HSQLDB] Max time: 235ms
+INFO: [HSQLDB] Avg time: 175,82ms
+INFO: [HSQLDB] Median: 170,50ms
+
+INFO: ===== Benchmarking HSQLDB =====
+INFO: ===== Benchmarking Mode: ROUND_ROBIN =====
+INFO: [HSQLDB] SQL: "SELECT *
+  FROM crash_data
+ WHERE id = 4455765;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 0ms
+INFO: [HSQLDB] Last run: 0ms
+INFO: [HSQLDB] Min time: 0ms
+INFO: [HSQLDB] Max time: 0ms
+INFO: [HSQLDB] Avg time: 0,00ms
+INFO: [HSQLDB] Median: 0,00ms
+
+INFO: [HSQLDB] SQL: "SELECT *
+  FROM crash_data
+ WHERE crash_date BETWEEN '2021-09-01' AND '2021-09-30';
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 9896
+INFO: [HSQLDB] First run: 70ms
+INFO: [HSQLDB] Last run: 114ms
+INFO: [HSQLDB] Min time: 70ms
+INFO: [HSQLDB] Max time: 114ms
+INFO: [HSQLDB] Avg time: 81,10ms
+INFO: [HSQLDB] Median: 80,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    COUNT(id) AS total_crashes_2024
+FROM crash_data
+WHERE EXTRACT(YEAR FROM crash_date) = 2024;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 64ms
+INFO: [HSQLDB] Last run: 117ms
+INFO: [HSQLDB] Min time: 64ms
+INFO: [HSQLDB] Max time: 117ms
+INFO: [HSQLDB] Avg time: 67,08ms
+INFO: [HSQLDB] Median: 66,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    borough,
+    COUNT(id) AS total_crashes
+FROM crash_data
+GROUP BY borough
+ORDER BY total_crashes DESC;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 6
+INFO: [HSQLDB] First run: 69ms
+INFO: [HSQLDB] Last run: 123ms
+INFO: [HSQLDB] Min time: 69ms
+INFO: [HSQLDB] Max time: 123ms
+INFO: [HSQLDB] Avg time: 73,54ms
+INFO: [HSQLDB] Median: 71,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    crash_time,
+    COUNT(id) AS total_crashes
+FROM crash_data
+WHERE crash_time != '00:00:00'
+GROUP BY crash_time
+ORDER BY total_crashes DESC
+LIMIT 1;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 132ms
+INFO: [HSQLDB] Last run: 158ms
+INFO: [HSQLDB] Min time: 132ms
+INFO: [HSQLDB] Max time: 158ms
+INFO: [HSQLDB] Avg time: 136,96ms
+INFO: [HSQLDB] Median: 136,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    id,
+    crash_date,
+    crash_time,
+    (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table
+FROM crash_data;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 300000
+INFO: [HSQLDB] First run: 148ms
+INFO: [HSQLDB] Last run: 193ms
+INFO: [HSQLDB] Min time: 148ms
+INFO: [HSQLDB] Max time: 193ms
+INFO: [HSQLDB] Avg time: 161,54ms
+INFO: [HSQLDB] Median: 157,00ms
+
+INFO: ===== Benchmarking SQLite =====
+INFO: ===== Benchmarking Mode: SEQUENTIAL =====
+INFO: [SQLite] SQL: "SELECT *
+  FROM crash_data
+ WHERE id = 4455765;
+"
+INFO: [SQLite] Runs: 50
+INFO: [SQLite] Timeouts: 0
+INFO: [SQLite] Rows returned: 1
+INFO: [SQLite] First run: 0ms
+INFO: [SQLite] Last run: 0ms
+INFO: [SQLite] Min time: 0ms
+INFO: [SQLite] Max time: 0ms
+INFO: [SQLite] Avg time: 0,00ms
+INFO: [SQLite] Median: 0,00ms
+
+INFO: [SQLite] SQL: "SELECT *
+  FROM crash_data
+ WHERE crash_date BETWEEN '2021-09-01' AND '2021-09-30';
+"
+INFO: [SQLite] Runs: 50
+INFO: [SQLite] Timeouts: 0
+INFO: [SQLite] Rows returned: 0
+INFO: [SQLite] First run: 27ms
+INFO: [SQLite] Last run: 33ms
+INFO: [SQLite] Min time: 27ms
+INFO: [SQLite] Max time: 33ms
+INFO: [SQLite] Avg time: 29,02ms
+INFO: [SQLite] Median: 29,00ms
+
+INFO: [SQLite] SQL: "SELECT
+    COUNT(id) AS total_crashes_2024
+FROM crash_data
+WHERE strftime('%Y', crash_date) = '2024';
+"
+INFO: [SQLite] Runs: 50
+INFO: [SQLite] Timeouts: 0
+INFO: [SQLite] Rows returned: 1
+INFO: [SQLite] First run: 32ms
+INFO: [SQLite] Last run: 36ms
+INFO: [SQLite] Min time: 32ms
+INFO: [SQLite] Max time: 36ms
+INFO: [SQLite] Avg time: 32,26ms
+INFO: [SQLite] Median: 32,00ms
+
+INFO: [SQLite] SQL: "SELECT
+    borough,
+    COUNT(id) AS total_crashes
+FROM crash_data
+GROUP BY borough
+ORDER BY total_crashes DESC;
+"
+INFO: [SQLite] Runs: 50
+INFO: [SQLite] Timeouts: 0
+INFO: [SQLite] Rows returned: 6
+INFO: [SQLite] First run: 145ms
+INFO: [SQLite] Last run: 157ms
+INFO: [SQLite] Min time: 145ms
+INFO: [SQLite] Max time: 157ms
+INFO: [SQLite] Avg time: 148,00ms
+INFO: [SQLite] Median: 148,00ms
+
+INFO: [SQLite] SQL: "SELECT
+    crash_time,
+    COUNT(id) AS total_crashes
+FROM crash_data
+WHERE crash_time != '00:00:00'
+GROUP BY crash_time
+ORDER BY total_crashes DESC
+LIMIT 1;
+"
+INFO: [SQLite] Runs: 50
+INFO: [SQLite] Timeouts: 0
+INFO: [SQLite] Rows returned: 1
+INFO: [SQLite] First run: 119ms
+INFO: [SQLite] Last run: 135ms
+INFO: [SQLite] Min time: 119ms
+INFO: [SQLite] Max time: 135ms
+INFO: [SQLite] Avg time: 126,36ms
+INFO: [SQLite] Median: 127,00ms
+
+INFO: [SQLite] SQL: "SELECT
+    id,
+    crash_date,
+    crash_time,
+    (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table
+FROM crash_data;
+"
+INFO: [SQLite] Runs: 50
+INFO: [SQLite] Timeouts: 0
+INFO: [SQLite] Rows returned: 300000
+INFO: [SQLite] First run: 53ms
+INFO: [SQLite] Last run: 68ms
+INFO: [SQLite] Min time: 53ms
+INFO: [SQLite] Max time: 68ms
+INFO: [SQLite] Avg time: 58,92ms
+INFO: [SQLite] Median: 59,00ms
+
+INFO: [SQLite] SQL: " SELECT
+     borough,
+     COUNT(id) AS total_crashes,
+     (SELECT MAX(persons_injured)
+        FROM crash_data c2
+       WHERE c2.borough = c1.borough
+     ) AS max_injured,
+     (SELECT MAX(crash_date)
+        FROM crash_data c3
+       WHERE c3.borough = c1.borough
+     ) AS most_recent_crash_date,
+     (SELECT vehicle_type_1
+        FROM crash_data c4
+       WHERE c4.borough = c1.borough
+       ORDER BY crash_date DESC
+       LIMIT 1
+     ) AS most_recent_vehicle_type
+ FROM crash_data c1
+WHERE borough IS NOT NULL
+GROUP BY borough
+ORDER BY total_crashes DESC;
+"
+INFO: [SQLite] Runs: 50
+INFO: [SQLite] Timeouts: 0
+INFO: [SQLite] Rows returned: 5
+INFO: [SQLite] First run: 564ms
+INFO: [SQLite] Last run: 627ms
+INFO: [SQLite] Min time: 564ms
+INFO: [SQLite] Max time: 627ms
+INFO: [SQLite] Avg time: 579,02ms
+INFO: [SQLite] Median: 575,50ms
+
+INFO: [SQLite] SQL: " SELECT
+     id,
+     crash_date,
+     crash_time,
+     borough,
+     zip_code,
+     latitude,
+     longitude,
+     location,
+     on_street_name,
+     cross_street_name,
+     off_street_name,
+     persons_injured,
+     persons_killed,
+     pedestrians_injured,
+     pedestrians_killed,
+     cyclists_injured,
+     cyclists_killed,
+     motorists_injured,
+     motorists_killed,
+     contributing_factor_1,
+     contributing_factor_2,
+     contributing_factor_3,
+     contributing_factor_4,
+     contributing_factor_5,
+     vehicle_type_1,
+     vehicle_type_2,
+     vehicle_type_3,
+     vehicle_type_4,
+     vehicle_type_5,
+     ROUND(latitude, 4) AS rounded_latitude,
+     ROUND(longitude, 4) AS rounded_longitude,
+     CASE
+         WHEN persons_injured > 0 THEN 'Injured'
+         ELSE 'No Injuries'
+     END AS injury_status,
+     LENGTH(location) AS location_length,
+     LENGTH(on_street_name) AS on_street_name_length,
+     LENGTH(cross_street_name) AS cross_street_name_length,
+     UPPER(borough) AS upper_borough,
+     CONCAT(on_street_name, ' & ', cross_street_name) AS street_intersection,
+     SIN(RADIANS(latitude)) AS sin_latitude,
+     COS(RADIANS(longitude)) AS cos_longitude
+ FROM crash_data
+WHERE borough IN ('BROOKLYN', 'QUEENS', 'MANHATTAN', 'BRONX', 'STATEN ISLAND')
+  AND crash_date BETWEEN '2015-01-01' AND '2025-12-31'
+  AND persons_injured > 0
+  AND zip_code LIKE '1%'
+  AND latitude BETWEEN 40.5 AND 41.5
+  AND longitude BETWEEN -74.5 AND -73.5
+ORDER BY crash_date DESC, crash_time DESC, borough, zip_code;
+"
+INFO: [SQLite] Runs: 50
+INFO: [SQLite] Timeouts: 0
+INFO: [SQLite] Rows returned: 0
+INFO: [SQLite] First run: 44ms
+INFO: [SQLite] Last run: 53ms
+INFO: [SQLite] Min time: 44ms
+INFO: [SQLite] Max time: 53ms
+INFO: [SQLite] Avg time: 46,42ms
+INFO: [SQLite] Median: 47,00ms
+
+INFO: ===== Benchmarking SQLite =====
+INFO: ===== Benchmarking Mode: ROUND_ROBIN =====
+INFO: [SQLite] SQL: "SELECT *
+  FROM crash_data
+ WHERE id = 4455765;
+"
+INFO: [SQLite] Runs: 50
+INFO: [SQLite] Timeouts: 0
+INFO: [SQLite] Rows returned: 1
+INFO: [SQLite] First run: 0ms
+INFO: [SQLite] Last run: 0ms
+INFO: [SQLite] Min time: 0ms
+INFO: [SQLite] Max time: 0ms
+INFO: [SQLite] Avg time: 0,00ms
+INFO: [SQLite] Median: 0,00ms
+
+INFO: [SQLite] SQL: "SELECT *
+  FROM crash_data
+ WHERE crash_date BETWEEN '2021-09-01' AND '2021-09-30';
+"
+INFO: [SQLite] Runs: 50
+INFO: [SQLite] Timeouts: 0
+INFO: [SQLite] Rows returned: 0
+INFO: [SQLite] First run: 28ms
+INFO: [SQLite] Last run: 30ms
+INFO: [SQLite] Min time: 28ms
+INFO: [SQLite] Max time: 30ms
+INFO: [SQLite] Avg time: 28,26ms
+INFO: [SQLite] Median: 28,00ms
+
+INFO: [SQLite] SQL: "SELECT
+    COUNT(id) AS total_crashes_2024
+FROM crash_data
+WHERE strftime('%Y', crash_date) = '2024';
+"
+INFO: [SQLite] Runs: 50
+INFO: [SQLite] Timeouts: 0
+INFO: [SQLite] Rows returned: 1
+INFO: [SQLite] First run: 32ms
+INFO: [SQLite] Last run: 35ms
+INFO: [SQLite] Min time: 32ms
+INFO: [SQLite] Max time: 35ms
+INFO: [SQLite] Avg time: 32,58ms
+INFO: [SQLite] Median: 32,00ms
+
+INFO: [SQLite] SQL: "SELECT
+    borough,
+    COUNT(id) AS total_crashes
+FROM crash_data
+GROUP BY borough
+ORDER BY total_crashes DESC;
+"
+INFO: [SQLite] Runs: 50
+INFO: [SQLite] Timeouts: 0
+INFO: [SQLite] Rows returned: 6
+INFO: [SQLite] First run: 145ms
+INFO: [SQLite] Last run: 161ms
+INFO: [SQLite] Min time: 145ms
+INFO: [SQLite] Max time: 161ms
+INFO: [SQLite] Avg time: 149,54ms
+INFO: [SQLite] Median: 149,00ms
+
+INFO: [SQLite] SQL: "SELECT
+    crash_time,
+    COUNT(id) AS total_crashes
+FROM crash_data
+WHERE crash_time != '00:00:00'
+GROUP BY crash_time
+ORDER BY total_crashes DESC
+LIMIT 1;
+"
+INFO: [SQLite] Runs: 50
+INFO: [SQLite] Timeouts: 0
+INFO: [SQLite] Rows returned: 1
+INFO: [SQLite] First run: 119ms
+INFO: [SQLite] Last run: 127ms
+INFO: [SQLite] Min time: 119ms
+INFO: [SQLite] Max time: 127ms
+INFO: [SQLite] Avg time: 120,76ms
+INFO: [SQLite] Median: 120,00ms
+
+INFO: [SQLite] SQL: "SELECT
+    id,
+    crash_date,
+    crash_time,
+    (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table
+FROM crash_data;
+"
+INFO: [SQLite] Runs: 50
+INFO: [SQLite] Timeouts: 0
+INFO: [SQLite] Rows returned: 300000
+INFO: [SQLite] First run: 53ms
+INFO: [SQLite] Last run: 59ms
+INFO: [SQLite] Min time: 53ms
+INFO: [SQLite] Max time: 59ms
+INFO: [SQLite] Avg time: 54,34ms
+INFO: [SQLite] Median: 54,00ms
+
+INFO: [SQLite] SQL: " SELECT
+     borough,
+     COUNT(id) AS total_crashes,
+     (SELECT MAX(persons_injured)
+        FROM crash_data c2
+       WHERE c2.borough = c1.borough
+     ) AS max_injured,
+     (SELECT MAX(crash_date)
+        FROM crash_data c3
+       WHERE c3.borough = c1.borough
+     ) AS most_recent_crash_date,
+     (SELECT vehicle_type_1
+        FROM crash_data c4
+       WHERE c4.borough = c1.borough
+       ORDER BY crash_date DESC
+       LIMIT 1
+     ) AS most_recent_vehicle_type
+ FROM crash_data c1
+WHERE borough IS NOT NULL
+GROUP BY borough
+ORDER BY total_crashes DESC;
+"
+INFO: [SQLite] Runs: 50
+INFO: [SQLite] Timeouts: 0
+INFO: [SQLite] Rows returned: 5
+INFO: [SQLite] First run: 561ms
+INFO: [SQLite] Last run: 605ms
+INFO: [SQLite] Min time: 561ms
+INFO: [SQLite] Max time: 605ms
+INFO: [SQLite] Avg time: 575,62ms
+INFO: [SQLite] Median: 573,00ms
+
+INFO: [SQLite] SQL: " SELECT
+     id,
+     crash_date,
+     crash_time,
+     borough,
+     zip_code,
+     latitude,
+     longitude,
+     location,
+     on_street_name,
+     cross_street_name,
+     off_street_name,
+     persons_injured,
+     persons_killed,
+     pedestrians_injured,
+     pedestrians_killed,
+     cyclists_injured,
+     cyclists_killed,
+     motorists_injured,
+     motorists_killed,
+     contributing_factor_1,
+     contributing_factor_2,
+     contributing_factor_3,
+     contributing_factor_4,
+     contributing_factor_5,
+     vehicle_type_1,
+     vehicle_type_2,
+     vehicle_type_3,
+     vehicle_type_4,
+     vehicle_type_5,
+     ROUND(latitude, 4) AS rounded_latitude,
+     ROUND(longitude, 4) AS rounded_longitude,
+     CASE
+         WHEN persons_injured > 0 THEN 'Injured'
+         ELSE 'No Injuries'
+     END AS injury_status,
+     LENGTH(location) AS location_length,
+     LENGTH(on_street_name) AS on_street_name_length,
+     LENGTH(cross_street_name) AS cross_street_name_length,
+     UPPER(borough) AS upper_borough,
+     CONCAT(on_street_name, ' & ', cross_street_name) AS street_intersection,
+     SIN(RADIANS(latitude)) AS sin_latitude,
+     COS(RADIANS(longitude)) AS cos_longitude
+ FROM crash_data
+WHERE borough IN ('BROOKLYN', 'QUEENS', 'MANHATTAN', 'BRONX', 'STATEN ISLAND')
+  AND crash_date BETWEEN '2015-01-01' AND '2025-12-31'
+  AND persons_injured > 0
+  AND zip_code LIKE '1%'
+  AND latitude BETWEEN 40.5 AND 41.5
+  AND longitude BETWEEN -74.5 AND -73.5
+ORDER BY crash_date DESC, crash_time DESC, borough, zip_code;
+"
+INFO: [SQLite] Runs: 50
+INFO: [SQLite] Timeouts: 0
+INFO: [SQLite] Rows returned: 0
+INFO: [SQLite] First run: 44ms
+INFO: [SQLite] Last run: 48ms
+INFO: [SQLite] Min time: 44ms
+INFO: [SQLite] Max time: 48ms
+INFO: [SQLite] Avg time: 45,86ms
+INFO: [SQLite] Median: 45,00ms
+
+INFO: ===== Benchmarking Postgres =====
+INFO: ===== Benchmarking Mode: SEQUENTIAL =====
+INFO: [Postgres] SQL: "SELECT *
+  FROM crash_data
+ WHERE id = 4455765;
+"
+INFO: [Postgres] Runs: 50
+INFO: [Postgres] Timeouts: 0
+INFO: [Postgres] Rows returned: 1
+INFO: [Postgres] First run: 0ms
+INFO: [Postgres] Last run: 1ms
+INFO: [Postgres] Min time: 0ms
+INFO: [Postgres] Max time: 1ms
+INFO: [Postgres] Avg time: 0,02ms
+INFO: [Postgres] Median: 0,00ms
+
+INFO: [Postgres] SQL: "SELECT *
+  FROM crash_data
+ WHERE crash_date BETWEEN '2021-09-01' AND '2021-09-30';
+"
+INFO: [Postgres] Runs: 50
+INFO: [Postgres] Timeouts: 0
+INFO: [Postgres] Rows returned: 9896
+INFO: [Postgres] First run: 27ms
+INFO: [Postgres] Last run: 37ms
+INFO: [Postgres] Min time: 27ms
+INFO: [Postgres] Max time: 37ms
+INFO: [Postgres] Avg time: 28,96ms
+INFO: [Postgres] Median: 28,00ms
+
+INFO: [Postgres] SQL: "SELECT
+    COUNT(id) AS total_crashes_2024
+FROM crash_data
+WHERE EXTRACT(YEAR FROM crash_date) = 2024;
+"
+INFO: [Postgres] Runs: 50
+INFO: [Postgres] Timeouts: 0
+INFO: [Postgres] Rows returned: 1
+INFO: [Postgres] First run: 22ms
+INFO: [Postgres] Last run: 25ms
+INFO: [Postgres] Min time: 22ms
+INFO: [Postgres] Max time: 25ms
+INFO: [Postgres] Avg time: 22,58ms
+INFO: [Postgres] Median: 22,00ms
+
+INFO: [Postgres] SQL: "SELECT
+    borough,
+    COUNT(id) AS total_crashes
+FROM crash_data
+GROUP BY borough
+ORDER BY total_crashes DESC;
+"
+INFO: [Postgres] Runs: 50
+INFO: [Postgres] Timeouts: 0
+INFO: [Postgres] Rows returned: 6
+INFO: [Postgres] First run: 21ms
+INFO: [Postgres] Last run: 27ms
+INFO: [Postgres] Min time: 21ms
+INFO: [Postgres] Max time: 27ms
+INFO: [Postgres] Avg time: 22,16ms
+INFO: [Postgres] Median: 22,00ms
+
+INFO: [Postgres] SQL: "SELECT
+    crash_time,
+    COUNT(id) AS total_crashes
+FROM crash_data
+WHERE crash_time != '00:00:00'
+GROUP BY crash_time
+ORDER BY total_crashes DESC
+LIMIT 1;
+"
+INFO: [Postgres] Runs: 50
+INFO: [Postgres] Timeouts: 0
+INFO: [Postgres] Rows returned: 1
+INFO: [Postgres] First run: 24ms
+INFO: [Postgres] Last run: 31ms
+INFO: [Postgres] Min time: 24ms
+INFO: [Postgres] Max time: 31ms
+INFO: [Postgres] Avg time: 25,10ms
+INFO: [Postgres] Median: 25,00ms
+
+INFO: [Postgres] SQL: "SELECT
+    id,
+    crash_date,
+    crash_time,
+    (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table
+FROM crash_data;
+"
+INFO: [Postgres] Runs: 50
+INFO: [Postgres] Timeouts: 0
+INFO: [Postgres] Rows returned: 300000
+INFO: [Postgres] First run: 110ms
+INFO: [Postgres] Last run: 152ms
+INFO: [Postgres] Min time: 110ms
+INFO: [Postgres] Max time: 152ms
+INFO: [Postgres] Avg time: 121,04ms
+INFO: [Postgres] Median: 116,00ms
+
+INFO: [Postgres] SQL: " SELECT
+     borough,
+     COUNT(id) AS total_crashes,
+     (SELECT MAX(persons_injured)
+        FROM crash_data c2
+       WHERE c2.borough = c1.borough
+     ) AS max_injured,
+     (SELECT MAX(crash_date)
+        FROM crash_data c3
+       WHERE c3.borough = c1.borough
+     ) AS most_recent_crash_date,
+     (SELECT vehicle_type_1
+        FROM crash_data c4
+       WHERE c4.borough = c1.borough
+       ORDER BY crash_date DESC
+       LIMIT 1
+     ) AS most_recent_vehicle_type
+ FROM crash_data c1
+WHERE borough IS NOT NULL
+GROUP BY borough
+ORDER BY total_crashes DESC;
+"
+INFO: [Postgres] Runs: 50
+INFO: [Postgres] Timeouts: 0
+INFO: [Postgres] Rows returned: 5
+INFO: [Postgres] First run: 472ms
+INFO: [Postgres] Last run: 644ms
+INFO: [Postgres] Min time: 472ms
+INFO: [Postgres] Max time: 644ms
+INFO: [Postgres] Avg time: 487,98ms
+INFO: [Postgres] Median: 483,00ms
+
+INFO: [Postgres] SQL: " SELECT
+     id,
+     crash_date,
+     crash_time,
+     borough,
+     zip_code,
+     latitude,
+     longitude,
+     location,
+     on_street_name,
+     cross_street_name,
+     off_street_name,
+     persons_injured,
+     persons_killed,
+     pedestrians_injured,
+     pedestrians_killed,
+     cyclists_injured,
+     cyclists_killed,
+     motorists_injured,
+     motorists_killed,
+     contributing_factor_1,
+     contributing_factor_2,
+     contributing_factor_3,
+     contributing_factor_4,
+     contributing_factor_5,
+     vehicle_type_1,
+     vehicle_type_2,
+     vehicle_type_3,
+     vehicle_type_4,
+     vehicle_type_5,
+     ROUND(latitude, 4) AS rounded_latitude,
+     ROUND(longitude, 4) AS rounded_longitude,
+     CASE
+         WHEN persons_injured > 0 THEN 'Injured'
+         ELSE 'No Injuries'
+     END AS injury_status,
+     LENGTH(location) AS location_length,
+     LENGTH(on_street_name) AS on_street_name_length,
+     LENGTH(cross_street_name) AS cross_street_name_length,
+     UPPER(borough) AS upper_borough,
+     CONCAT(on_street_name, ' & ', cross_street_name) AS street_intersection,
+     SIN(RADIANS(latitude)) AS sin_latitude,
+     COS(RADIANS(longitude)) AS cos_longitude
+ FROM crash_data
+WHERE borough IN ('BROOKLYN', 'QUEENS', 'MANHATTAN', 'BRONX', 'STATEN ISLAND')
+  AND crash_date BETWEEN '2015-01-01' AND '2025-12-31'
+  AND persons_injured > 0
+  AND zip_code LIKE '1%'
+  AND latitude BETWEEN 40.5 AND 41.5
+  AND longitude BETWEEN -74.5 AND -73.5
+ORDER BY crash_date DESC, crash_time DESC, borough, zip_code;
+"
+INFO: [Postgres] Runs: 50
+INFO: [Postgres] Timeouts: 0
+INFO: [Postgres] Rows returned: 72911
+INFO: [Postgres] First run: 238ms
+INFO: [Postgres] Last run: 315ms
+INFO: [Postgres] Min time: 238ms
+INFO: [Postgres] Max time: 315ms
+INFO: [Postgres] Avg time: 254,74ms
+INFO: [Postgres] Median: 251,00ms
+
+INFO: ===== Benchmarking Postgres =====
+INFO: ===== Benchmarking Mode: ROUND_ROBIN =====
+INFO: [Postgres] SQL: "SELECT *
+  FROM crash_data
+ WHERE id = 4455765;
+"
+INFO: [Postgres] Runs: 50
+INFO: [Postgres] Timeouts: 0
+INFO: [Postgres] Rows returned: 1
+INFO: [Postgres] First run: 0ms
+INFO: [Postgres] Last run: 1ms
+INFO: [Postgres] Min time: 0ms
+INFO: [Postgres] Max time: 1ms
+INFO: [Postgres] Avg time: 0,02ms
+INFO: [Postgres] Median: 0,00ms
+
+INFO: [Postgres] SQL: "SELECT *
+  FROM crash_data
+ WHERE crash_date BETWEEN '2021-09-01' AND '2021-09-30';
+"
+INFO: [Postgres] Runs: 50
+INFO: [Postgres] Timeouts: 0
+INFO: [Postgres] Rows returned: 9896
+INFO: [Postgres] First run: 29ms
+INFO: [Postgres] Last run: 44ms
+INFO: [Postgres] Min time: 29ms
+INFO: [Postgres] Max time: 44ms
+INFO: [Postgres] Avg time: 33,86ms
+INFO: [Postgres] Median: 33,00ms
+
+INFO: [Postgres] SQL: "SELECT
+    COUNT(id) AS total_crashes_2024
+FROM crash_data
+WHERE EXTRACT(YEAR FROM crash_date) = 2024;
+"
+INFO: [Postgres] Runs: 50
+INFO: [Postgres] Timeouts: 0
+INFO: [Postgres] Rows returned: 1
+INFO: [Postgres] First run: 29ms
+INFO: [Postgres] Last run: 38ms
+INFO: [Postgres] Min time: 29ms
+INFO: [Postgres] Max time: 38ms
+INFO: [Postgres] Avg time: 31,00ms
+INFO: [Postgres] Median: 30,50ms
+
+INFO: [Postgres] SQL: "SELECT
+    borough,
+    COUNT(id) AS total_crashes
+FROM crash_data
+GROUP BY borough
+ORDER BY total_crashes DESC;
+"
+INFO: [Postgres] Runs: 50
+INFO: [Postgres] Timeouts: 0
+INFO: [Postgres] Rows returned: 6
+INFO: [Postgres] First run: 24ms
+INFO: [Postgres] Last run: 36ms
+INFO: [Postgres] Min time: 24ms
+INFO: [Postgres] Max time: 36ms
+INFO: [Postgres] Avg time: 29,72ms
+INFO: [Postgres] Median: 30,00ms
+
+INFO: [Postgres] SQL: "SELECT
+    crash_time,
+    COUNT(id) AS total_crashes
+FROM crash_data
+WHERE crash_time != '00:00:00'
+GROUP BY crash_time
+ORDER BY total_crashes DESC
+LIMIT 1;
+"
+INFO: [Postgres] Runs: 50
+INFO: [Postgres] Timeouts: 0
+INFO: [Postgres] Rows returned: 1
+INFO: [Postgres] First run: 25ms
+INFO: [Postgres] Last run: 40ms
+INFO: [Postgres] Min time: 25ms
+INFO: [Postgres] Max time: 40ms
+INFO: [Postgres] Avg time: 33,02ms
+INFO: [Postgres] Median: 33,00ms
+
+INFO: [Postgres] SQL: "SELECT
+    id,
+    crash_date,
+    crash_time,
+    (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table
+FROM crash_data;
+"
+INFO: [Postgres] Runs: 50
+INFO: [Postgres] Timeouts: 0
+INFO: [Postgres] Rows returned: 300000
+INFO: [Postgres] First run: 113ms
+INFO: [Postgres] Last run: 145ms
+INFO: [Postgres] Min time: 113ms
+INFO: [Postgres] Max time: 145ms
+INFO: [Postgres] Avg time: 122,16ms
+INFO: [Postgres] Median: 118,50ms
+
+INFO: [Postgres] SQL: " SELECT
+     borough,
+     COUNT(id) AS total_crashes,
+     (SELECT MAX(persons_injured)
+        FROM crash_data c2
+       WHERE c2.borough = c1.borough
+     ) AS max_injured,
+     (SELECT MAX(crash_date)
+        FROM crash_data c3
+       WHERE c3.borough = c1.borough
+     ) AS most_recent_crash_date,
+     (SELECT vehicle_type_1
+        FROM crash_data c4
+       WHERE c4.borough = c1.borough
+       ORDER BY crash_date DESC
+       LIMIT 1
+     ) AS most_recent_vehicle_type
+ FROM crash_data c1
+WHERE borough IS NOT NULL
+GROUP BY borough
+ORDER BY total_crashes DESC;
+"
+INFO: [Postgres] Runs: 50
+INFO: [Postgres] Timeouts: 0
+INFO: [Postgres] Rows returned: 5
+INFO: [Postgres] First run: 478ms
+INFO: [Postgres] Last run: 517ms
+INFO: [Postgres] Min time: 478ms
+INFO: [Postgres] Max time: 517ms
+INFO: [Postgres] Avg time: 490,02ms
+INFO: [Postgres] Median: 487,00ms
+
+INFO: [Postgres] SQL: " SELECT
+     id,
+     crash_date,
+     crash_time,
+     borough,
+     zip_code,
+     latitude,
+     longitude,
+     location,
+     on_street_name,
+     cross_street_name,
+     off_street_name,
+     persons_injured,
+     persons_killed,
+     pedestrians_injured,
+     pedestrians_killed,
+     cyclists_injured,
+     cyclists_killed,
+     motorists_injured,
+     motorists_killed,
+     contributing_factor_1,
+     contributing_factor_2,
+     contributing_factor_3,
+     contributing_factor_4,
+     contributing_factor_5,
+     vehicle_type_1,
+     vehicle_type_2,
+     vehicle_type_3,
+     vehicle_type_4,
+     vehicle_type_5,
+     ROUND(latitude, 4) AS rounded_latitude,
+     ROUND(longitude, 4) AS rounded_longitude,
+     CASE
+         WHEN persons_injured > 0 THEN 'Injured'
+         ELSE 'No Injuries'
+     END AS injury_status,
+     LENGTH(location) AS location_length,
+     LENGTH(on_street_name) AS on_street_name_length,
+     LENGTH(cross_street_name) AS cross_street_name_length,
+     UPPER(borough) AS upper_borough,
+     CONCAT(on_street_name, ' & ', cross_street_name) AS street_intersection,
+     SIN(RADIANS(latitude)) AS sin_latitude,
+     COS(RADIANS(longitude)) AS cos_longitude
+ FROM crash_data
+WHERE borough IN ('BROOKLYN', 'QUEENS', 'MANHATTAN', 'BRONX', 'STATEN ISLAND')
+  AND crash_date BETWEEN '2015-01-01' AND '2025-12-31'
+  AND persons_injured > 0
+  AND zip_code LIKE '1%'
+  AND latitude BETWEEN 40.5 AND 41.5
+  AND longitude BETWEEN -74.5 AND -73.5
+ORDER BY crash_date DESC, crash_time DESC, borough, zip_code;
+"
+INFO: [Postgres] Runs: 50
+INFO: [Postgres] Timeouts: 0
+INFO: [Postgres] Rows returned: 72911
+INFO: [Postgres] First run: 234ms
+INFO: [Postgres] Last run: 316ms
+INFO: [Postgres] Min time: 234ms
+INFO: [Postgres] Max time: 316ms
+INFO: [Postgres] Avg time: 258,88ms
+INFO: [Postgres] Median: 254,00ms
