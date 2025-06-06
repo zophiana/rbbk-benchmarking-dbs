@@ -18,7 +18,7 @@ public class JavaBenchmarkingTool {
     private static final DbConfig Postgres = new QueryDatabase.DbConfig(
             "Postgres",
             "org.postgresql.Driver",
-            "jdbc:postgresql://localhost:5432/1m",
+            "jdbc:postgresql://localhost:5432/pgdb",
             "info",
             "geheim"
     );
