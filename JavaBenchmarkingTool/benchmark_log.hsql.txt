@@ -1,0 +1,784 @@
+INFO: ===== Benchmarking HSQLDB =====
+INFO: ===== Benchmarking Mode: SEQUENTIAL =====
+INFO: [HSQLDB] SQL: "SELECT *
+  FROM crash_data
+ WHERE id = 4455765;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 0ms
+INFO: [HSQLDB] Last run: 3ms
+INFO: [HSQLDB] Min time: 0ms
+INFO: [HSQLDB] Max time: 3ms
+INFO: [HSQLDB] Avg time: 0,14ms
+INFO: [HSQLDB] Median: 0,00ms
+
+INFO: [HSQLDB] SQL: "SELECT *
+  FROM crash_data
+ WHERE crash_date BETWEEN '2021-09-01' AND '2021-09-30';
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 9875
+INFO: [HSQLDB] First run: 35ms
+INFO: [HSQLDB] Last run: 128ms
+INFO: [HSQLDB] Min time: 35ms
+INFO: [HSQLDB] Max time: 128ms
+INFO: [HSQLDB] Avg time: 42,36ms
+INFO: [HSQLDB] Median: 38,50ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    COUNT(id) AS total_crashes_2024
+FROM crash_data
+WHERE EXTRACT(YEAR FROM crash_date) = 2024;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 22ms
+INFO: [HSQLDB] Last run: 45ms
+INFO: [HSQLDB] Min time: 22ms
+INFO: [HSQLDB] Max time: 45ms
+INFO: [HSQLDB] Avg time: 24,66ms
+INFO: [HSQLDB] Median: 24,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    borough,
+    COUNT(id) AS total_crashes
+FROM crash_data
+GROUP BY borough
+ORDER BY total_crashes DESC;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 6
+INFO: [HSQLDB] First run: 23ms
+INFO: [HSQLDB] Last run: 47ms
+INFO: [HSQLDB] Min time: 23ms
+INFO: [HSQLDB] Max time: 47ms
+INFO: [HSQLDB] Avg time: 26,06ms
+INFO: [HSQLDB] Median: 25,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    crash_time,
+    COUNT(id) AS total_crashes
+FROM crash_data
+WHERE crash_time != '00:00:00'
+GROUP BY crash_time
+ORDER BY total_crashes DESC
+LIMIT 1;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 41ms
+INFO: [HSQLDB] Last run: 48ms
+INFO: [HSQLDB] Min time: 41ms
+INFO: [HSQLDB] Max time: 48ms
+INFO: [HSQLDB] Avg time: 44,08ms
+INFO: [HSQLDB] Median: 44,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    id,
+    crash_date,
+    crash_time,
+    (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table
+FROM crash_data;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 100000
+INFO: [HSQLDB] First run: 47ms
+INFO: [HSQLDB] Last run: 89ms
+INFO: [HSQLDB] Min time: 47ms
+INFO: [HSQLDB] Max time: 89ms
+INFO: [HSQLDB] Avg time: 50,54ms
+INFO: [HSQLDB] Median: 49,00ms
+
+INFO: ===== Benchmarking HSQLDB =====
+INFO: ===== Benchmarking Mode: ROUND_ROBIN =====
+INFO: [HSQLDB] SQL: "SELECT *
+  FROM crash_data
+ WHERE id = 4455765;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 0ms
+INFO: [HSQLDB] Last run: 0ms
+INFO: [HSQLDB] Min time: 0ms
+INFO: [HSQLDB] Max time: 0ms
+INFO: [HSQLDB] Avg time: 0,00ms
+INFO: [HSQLDB] Median: 0,00ms
+
+INFO: [HSQLDB] SQL: "SELECT *
+  FROM crash_data
+ WHERE crash_date BETWEEN '2021-09-01' AND '2021-09-30';
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 9875
+INFO: [HSQLDB] First run: 36ms
+INFO: [HSQLDB] Last run: 43ms
+INFO: [HSQLDB] Min time: 36ms
+INFO: [HSQLDB] Max time: 43ms
+INFO: [HSQLDB] Avg time: 37,96ms
+INFO: [HSQLDB] Median: 38,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    COUNT(id) AS total_crashes_2024
+FROM crash_data
+WHERE EXTRACT(YEAR FROM crash_date) = 2024;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 21ms
+INFO: [HSQLDB] Last run: 23ms
+INFO: [HSQLDB] Min time: 21ms
+INFO: [HSQLDB] Max time: 23ms
+INFO: [HSQLDB] Avg time: 21,44ms
+INFO: [HSQLDB] Median: 21,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    borough,
+    COUNT(id) AS total_crashes
+FROM crash_data
+GROUP BY borough
+ORDER BY total_crashes DESC;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 6
+INFO: [HSQLDB] First run: 24ms
+INFO: [HSQLDB] Last run: 26ms
+INFO: [HSQLDB] Min time: 24ms
+INFO: [HSQLDB] Max time: 26ms
+INFO: [HSQLDB] Avg time: 24,90ms
+INFO: [HSQLDB] Median: 25,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    crash_time,
+    COUNT(id) AS total_crashes
+FROM crash_data
+WHERE crash_time != '00:00:00'
+GROUP BY crash_time
+ORDER BY total_crashes DESC
+LIMIT 1;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 43ms
+INFO: [HSQLDB] Last run: 48ms
+INFO: [HSQLDB] Min time: 43ms
+INFO: [HSQLDB] Max time: 48ms
+INFO: [HSQLDB] Avg time: 44,94ms
+INFO: [HSQLDB] Median: 45,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    id,
+    crash_date,
+    crash_time,
+    (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table
+FROM crash_data;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 100000
+INFO: [HSQLDB] First run: 47ms
+INFO: [HSQLDB] Last run: 56ms
+INFO: [HSQLDB] Min time: 47ms
+INFO: [HSQLDB] Max time: 56ms
+INFO: [HSQLDB] Avg time: 50,10ms
+INFO: [HSQLDB] Median: 50,00ms
+
+INFO: ===== Benchmarking HSQLDB =====
+INFO: ===== Benchmarking Mode: SEQUENTIAL =====
+INFO: [HSQLDB] SQL: "SELECT *
+  FROM crash_data
+ WHERE id = 4455765;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 0ms
+INFO: [HSQLDB] Last run: 0ms
+INFO: [HSQLDB] Min time: 0ms
+INFO: [HSQLDB] Max time: 0ms
+INFO: [HSQLDB] Avg time: 0,00ms
+INFO: [HSQLDB] Median: 0,00ms
+
+INFO: [HSQLDB] SQL: "SELECT *
+  FROM crash_data
+ WHERE crash_date BETWEEN '2021-09-01' AND '2021-09-30';
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 9896
+INFO: [HSQLDB] First run: 72ms
+INFO: [HSQLDB] Last run: 125ms
+INFO: [HSQLDB] Min time: 72ms
+INFO: [HSQLDB] Max time: 125ms
+INFO: [HSQLDB] Avg time: 79,50ms
+INFO: [HSQLDB] Median: 76,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    COUNT(id) AS total_crashes_2024
+FROM crash_data
+WHERE EXTRACT(YEAR FROM crash_date) = 2024;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 63ms
+INFO: [HSQLDB] Last run: 69ms
+INFO: [HSQLDB] Min time: 63ms
+INFO: [HSQLDB] Max time: 69ms
+INFO: [HSQLDB] Avg time: 65,42ms
+INFO: [HSQLDB] Median: 66,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    borough,
+    COUNT(id) AS total_crashes
+FROM crash_data
+GROUP BY borough
+ORDER BY total_crashes DESC;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 6
+INFO: [HSQLDB] First run: 68ms
+INFO: [HSQLDB] Last run: 73ms
+INFO: [HSQLDB] Min time: 68ms
+INFO: [HSQLDB] Max time: 73ms
+INFO: [HSQLDB] Avg time: 69,98ms
+INFO: [HSQLDB] Median: 70,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    crash_time,
+    COUNT(id) AS total_crashes
+FROM crash_data
+WHERE crash_time != '00:00:00'
+GROUP BY crash_time
+ORDER BY total_crashes DESC
+LIMIT 1;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 134ms
+INFO: [HSQLDB] Last run: 142ms
+INFO: [HSQLDB] Min time: 134ms
+INFO: [HSQLDB] Max time: 142ms
+INFO: [HSQLDB] Avg time: 136,44ms
+INFO: [HSQLDB] Median: 136,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    id,
+    crash_date,
+    crash_time,
+    (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table
+FROM crash_data;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 300000
+INFO: [HSQLDB] First run: 145ms
+INFO: [HSQLDB] Last run: 235ms
+INFO: [HSQLDB] Min time: 145ms
+INFO: [HSQLDB] Max time: 235ms
+INFO: [HSQLDB] Avg time: 175,82ms
+INFO: [HSQLDB] Median: 170,50ms
+
+INFO: ===== Benchmarking HSQLDB =====
+INFO: ===== Benchmarking Mode: ROUND_ROBIN =====
+INFO: [HSQLDB] SQL: "SELECT *
+  FROM crash_data
+ WHERE id = 4455765;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 0ms
+INFO: [HSQLDB] Last run: 0ms
+INFO: [HSQLDB] Min time: 0ms
+INFO: [HSQLDB] Max time: 0ms
+INFO: [HSQLDB] Avg time: 0,00ms
+INFO: [HSQLDB] Median: 0,00ms
+
+INFO: [HSQLDB] SQL: "SELECT *
+  FROM crash_data
+ WHERE crash_date BETWEEN '2021-09-01' AND '2021-09-30';
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 9896
+INFO: [HSQLDB] First run: 70ms
+INFO: [HSQLDB] Last run: 114ms
+INFO: [HSQLDB] Min time: 70ms
+INFO: [HSQLDB] Max time: 114ms
+INFO: [HSQLDB] Avg time: 81,10ms
+INFO: [HSQLDB] Median: 80,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    COUNT(id) AS total_crashes_2024
+FROM crash_data
+WHERE EXTRACT(YEAR FROM crash_date) = 2024;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 64ms
+INFO: [HSQLDB] Last run: 117ms
+INFO: [HSQLDB] Min time: 64ms
+INFO: [HSQLDB] Max time: 117ms
+INFO: [HSQLDB] Avg time: 67,08ms
+INFO: [HSQLDB] Median: 66,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    borough,
+    COUNT(id) AS total_crashes
+FROM crash_data
+GROUP BY borough
+ORDER BY total_crashes DESC;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 6
+INFO: [HSQLDB] First run: 69ms
+INFO: [HSQLDB] Last run: 123ms
+INFO: [HSQLDB] Min time: 69ms
+INFO: [HSQLDB] Max time: 123ms
+INFO: [HSQLDB] Avg time: 73,54ms
+INFO: [HSQLDB] Median: 71,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    crash_time,
+    COUNT(id) AS total_crashes
+FROM crash_data
+WHERE crash_time != '00:00:00'
+GROUP BY crash_time
+ORDER BY total_crashes DESC
+LIMIT 1;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 132ms
+INFO: [HSQLDB] Last run: 158ms
+INFO: [HSQLDB] Min time: 132ms
+INFO: [HSQLDB] Max time: 158ms
+INFO: [HSQLDB] Avg time: 136,96ms
+INFO: [HSQLDB] Median: 136,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    id,
+    crash_date,
+    crash_time,
+    (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table
+FROM crash_data;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 300000
+INFO: [HSQLDB] First run: 148ms
+INFO: [HSQLDB] Last run: 193ms
+INFO: [HSQLDB] Min time: 148ms
+INFO: [HSQLDB] Max time: 193ms
+INFO: [HSQLDB] Avg time: 161,54ms
+INFO: [HSQLDB] Median: 157,00ms
+
+INFO: ===== Benchmarking HSQLDB =====
+INFO: ===== Benchmarking Mode: SEQUENTIAL =====
+INFO: [HSQLDB] SQL: "SELECT *
+  FROM crash_data
+ WHERE id = 4455765;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 0ms
+INFO: [HSQLDB] Last run: 0ms
+INFO: [HSQLDB] Min time: 0ms
+INFO: [HSQLDB] Max time: 0ms
+INFO: [HSQLDB] Avg time: 0,00ms
+INFO: [HSQLDB] Median: 0,00ms
+
+INFO: [HSQLDB] SQL: "SELECT *
+  FROM crash_data
+ WHERE crash_date BETWEEN '2021-09-01' AND '2021-09-30';
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 9896
+INFO: [HSQLDB] First run: 167ms
+INFO: [HSQLDB] Last run: 247ms
+INFO: [HSQLDB] Min time: 167ms
+INFO: [HSQLDB] Max time: 247ms
+INFO: [HSQLDB] Avg time: 178,08ms
+INFO: [HSQLDB] Median: 177,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    COUNT(id) AS total_crashes_2024
+FROM crash_data
+WHERE EXTRACT(YEAR FROM crash_date) = 2024;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 196ms
+INFO: [HSQLDB] Last run: 204ms
+INFO: [HSQLDB] Min time: 196ms
+INFO: [HSQLDB] Max time: 204ms
+INFO: [HSQLDB] Avg time: 198,28ms
+INFO: [HSQLDB] Median: 197,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    borough,
+    COUNT(id) AS total_crashes
+FROM crash_data
+GROUP BY borough
+ORDER BY total_crashes DESC;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 6
+INFO: [HSQLDB] First run: 208ms
+INFO: [HSQLDB] Last run: 220ms
+INFO: [HSQLDB] Min time: 208ms
+INFO: [HSQLDB] Max time: 220ms
+INFO: [HSQLDB] Avg time: 214,76ms
+INFO: [HSQLDB] Median: 214,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    crash_time,
+    COUNT(id) AS total_crashes
+FROM crash_data
+WHERE crash_time != '00:00:00'
+GROUP BY crash_time
+ORDER BY total_crashes DESC
+LIMIT 1;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 382ms
+INFO: [HSQLDB] Last run: 415ms
+INFO: [HSQLDB] Min time: 382ms
+INFO: [HSQLDB] Max time: 415ms
+INFO: [HSQLDB] Avg time: 394,74ms
+INFO: [HSQLDB] Median: 393,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    id,
+    crash_date,
+    crash_time,
+    (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table
+FROM crash_data;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 900000
+INFO: [HSQLDB] First run: 424ms
+INFO: [HSQLDB] Last run: 629ms
+INFO: [HSQLDB] Min time: 424ms
+INFO: [HSQLDB] Max time: 629ms
+INFO: [HSQLDB] Avg time: 480,30ms
+INFO: [HSQLDB] Median: 469,00ms
+
+INFO: ===== Benchmarking HSQLDB =====
+INFO: ===== Benchmarking Mode: ROUND_ROBIN =====
+INFO: [HSQLDB] SQL: "SELECT *
+  FROM crash_data
+ WHERE id = 4455765;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 0ms
+INFO: [HSQLDB] Last run: 0ms
+INFO: [HSQLDB] Min time: 0ms
+INFO: [HSQLDB] Max time: 0ms
+INFO: [HSQLDB] Avg time: 0,00ms
+INFO: [HSQLDB] Median: 0,00ms
+
+INFO: [HSQLDB] SQL: "SELECT *
+  FROM crash_data
+ WHERE crash_date BETWEEN '2021-09-01' AND '2021-09-30';
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 9896
+INFO: [HSQLDB] First run: 159ms
+INFO: [HSQLDB] Last run: 206ms
+INFO: [HSQLDB] Min time: 159ms
+INFO: [HSQLDB] Max time: 206ms
+INFO: [HSQLDB] Avg time: 175,60ms
+INFO: [HSQLDB] Median: 173,50ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    COUNT(id) AS total_crashes_2024
+FROM crash_data
+WHERE EXTRACT(YEAR FROM crash_date) = 2024;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 190ms
+INFO: [HSQLDB] Last run: 289ms
+INFO: [HSQLDB] Min time: 190ms
+INFO: [HSQLDB] Max time: 289ms
+INFO: [HSQLDB] Avg time: 196,90ms
+INFO: [HSQLDB] Median: 194,50ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    borough,
+    COUNT(id) AS total_crashes
+FROM crash_data
+GROUP BY borough
+ORDER BY total_crashes DESC;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 6
+INFO: [HSQLDB] First run: 206ms
+INFO: [HSQLDB] Last run: 296ms
+INFO: [HSQLDB] Min time: 206ms
+INFO: [HSQLDB] Max time: 296ms
+INFO: [HSQLDB] Avg time: 218,22ms
+INFO: [HSQLDB] Median: 214,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    crash_time,
+    COUNT(id) AS total_crashes
+FROM crash_data
+WHERE crash_time != '00:00:00'
+GROUP BY crash_time
+ORDER BY total_crashes DESC
+LIMIT 1;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 384ms
+INFO: [HSQLDB] Last run: 417ms
+INFO: [HSQLDB] Min time: 384ms
+INFO: [HSQLDB] Max time: 417ms
+INFO: [HSQLDB] Avg time: 396,68ms
+INFO: [HSQLDB] Median: 394,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    id,
+    crash_date,
+    crash_time,
+    (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table
+FROM crash_data;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 900000
+INFO: [HSQLDB] First run: 430ms
+INFO: [HSQLDB] Last run: 637ms
+INFO: [HSQLDB] Min time: 430ms
+INFO: [HSQLDB] Max time: 637ms
+INFO: [HSQLDB] Avg time: 478,64ms
+INFO: [HSQLDB] Median: 469,00ms
+
+INFO: ===== Benchmarking HSQLDB =====
+INFO: ===== Benchmarking Mode: SEQUENTIAL =====
+INFO: [HSQLDB] SQL: "SELECT *
+  FROM crash_data
+ WHERE id = 4455765;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 0ms
+INFO: [HSQLDB] Last run: 0ms
+INFO: [HSQLDB] Min time: 0ms
+INFO: [HSQLDB] Max time: 0ms
+INFO: [HSQLDB] Avg time: 0,00ms
+INFO: [HSQLDB] Median: 0,00ms
+
+INFO: [HSQLDB] SQL: "SELECT *
+  FROM crash_data
+ WHERE crash_date BETWEEN '2021-09-01' AND '2021-09-30';
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 9896
+INFO: [HSQLDB] First run: 306ms
+INFO: [HSQLDB] Last run: 373ms
+INFO: [HSQLDB] Min time: 306ms
+INFO: [HSQLDB] Max time: 373ms
+INFO: [HSQLDB] Avg time: 323,36ms
+INFO: [HSQLDB] Median: 323,50ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    COUNT(id) AS total_crashes_2024
+FROM crash_data
+WHERE EXTRACT(YEAR FROM crash_date) = 2024;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 380ms
+INFO: [HSQLDB] Last run: 413ms
+INFO: [HSQLDB] Min time: 380ms
+INFO: [HSQLDB] Max time: 413ms
+INFO: [HSQLDB] Avg time: 385,62ms
+INFO: [HSQLDB] Median: 385,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    borough,
+    COUNT(id) AS total_crashes
+FROM crash_data
+GROUP BY borough
+ORDER BY total_crashes DESC;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 6
+INFO: [HSQLDB] First run: 443ms
+INFO: [HSQLDB] Last run: 486ms
+INFO: [HSQLDB] Min time: 443ms
+INFO: [HSQLDB] Max time: 486ms
+INFO: [HSQLDB] Avg time: 456,60ms
+INFO: [HSQLDB] Median: 453,50ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    crash_time,
+    COUNT(id) AS total_crashes
+FROM crash_data
+WHERE crash_time != '00:00:00'
+GROUP BY crash_time
+ORDER BY total_crashes DESC
+LIMIT 1;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 762ms
+INFO: [HSQLDB] Last run: 840ms
+INFO: [HSQLDB] Min time: 762ms
+INFO: [HSQLDB] Max time: 840ms
+INFO: [HSQLDB] Avg time: 787,68ms
+INFO: [HSQLDB] Median: 781,50ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    id,
+    crash_date,
+    crash_time,
+    (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table
+FROM crash_data;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1799999
+INFO: [HSQLDB] First run: 841ms
+INFO: [HSQLDB] Last run: 1216ms
+INFO: [HSQLDB] Min time: 841ms
+INFO: [HSQLDB] Max time: 1216ms
+INFO: [HSQLDB] Avg time: 965,16ms
+INFO: [HSQLDB] Median: 946,50ms
+
+INFO: ===== Benchmarking HSQLDB =====
+INFO: ===== Benchmarking Mode: ROUND_ROBIN =====
+INFO: [HSQLDB] SQL: "SELECT *
+  FROM crash_data
+ WHERE id = 4455765;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 0ms
+INFO: [HSQLDB] Last run: 0ms
+INFO: [HSQLDB] Min time: 0ms
+INFO: [HSQLDB] Max time: 0ms
+INFO: [HSQLDB] Avg time: 0,00ms
+INFO: [HSQLDB] Median: 0,00ms
+
+INFO: [HSQLDB] SQL: "SELECT *
+  FROM crash_data
+ WHERE crash_date BETWEEN '2021-09-01' AND '2021-09-30';
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 9896
+INFO: [HSQLDB] First run: 300ms
+INFO: [HSQLDB] Last run: 408ms
+INFO: [HSQLDB] Min time: 300ms
+INFO: [HSQLDB] Max time: 408ms
+INFO: [HSQLDB] Avg time: 319,52ms
+INFO: [HSQLDB] Median: 313,50ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    COUNT(id) AS total_crashes_2024
+FROM crash_data
+WHERE EXTRACT(YEAR FROM crash_date) = 2024;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 367ms
+INFO: [HSQLDB] Last run: 436ms
+INFO: [HSQLDB] Min time: 367ms
+INFO: [HSQLDB] Max time: 436ms
+INFO: [HSQLDB] Avg time: 383,12ms
+INFO: [HSQLDB] Median: 382,00ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    borough,
+    COUNT(id) AS total_crashes
+FROM crash_data
+GROUP BY borough
+ORDER BY total_crashes DESC;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 6
+INFO: [HSQLDB] First run: 444ms
+INFO: [HSQLDB] Last run: 565ms
+INFO: [HSQLDB] Min time: 444ms
+INFO: [HSQLDB] Max time: 565ms
+INFO: [HSQLDB] Avg time: 468,90ms
+INFO: [HSQLDB] Median: 454,50ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    crash_time,
+    COUNT(id) AS total_crashes
+FROM crash_data
+WHERE crash_time != '00:00:00'
+GROUP BY crash_time
+ORDER BY total_crashes DESC
+LIMIT 1;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1
+INFO: [HSQLDB] First run: 763ms
+INFO: [HSQLDB] Last run: 883ms
+INFO: [HSQLDB] Min time: 763ms
+INFO: [HSQLDB] Max time: 883ms
+INFO: [HSQLDB] Avg time: 791,40ms
+INFO: [HSQLDB] Median: 786,50ms
+
+INFO: [HSQLDB] SQL: "SELECT
+    id,
+    crash_date,
+    crash_time,
+    (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table
+FROM crash_data;
+"
+INFO: [HSQLDB] Runs: 50
+INFO: [HSQLDB] Timeouts: 0
+INFO: [HSQLDB] Rows returned: 1799999
+INFO: [HSQLDB] First run: 867ms
+INFO: [HSQLDB] Last run: 1143ms
+INFO: [HSQLDB] Min time: 867ms
+INFO: [HSQLDB] Max time: 1143ms
+INFO: [HSQLDB] Avg time: 962,46ms
+INFO: [HSQLDB] Median: 950,50ms
+
