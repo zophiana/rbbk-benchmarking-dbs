@@ -1,0 +1,13 @@
+DB,Mode,runs,Rows,Min_ms,Max_ms,Avg_ms,Med_ms,query,rows
+HSQLDB,ROUND_ROBIN,50,1,43,48,44.94,45.0,Group by crash_time,100000
+HSQLDB,ROUND_ROBIN,50,1,132,158,136.96,136.0,Group by crash_time,300000
+HSQLDB,ROUND_ROBIN,50,1,384,417,396.68,394.0,Group by crash_time,900000
+HSQLDB,ROUND_ROBIN,50,1,763,883,791.4,786.5,Group by crash_time,1800000
+Postgres,ROUND_ROBIN,50,1,16,19,16.44,16.0,Group by crash_time,100000
+Postgres,ROUND_ROBIN,50,1,25,40,33.02,33.0,Group by crash_time,300000
+Postgres,ROUND_ROBIN,50,1,64,75,70.94,71.0,Group by crash_time,900000
+Postgres,ROUND_ROBIN,50,1,120,141,126.66,126.0,Group by crash_time,1800000
+SQLite,ROUND_ROBIN,50,1,38,40,38.88,39.0,Group by crash_time,100000
+SQLite,ROUND_ROBIN,50,1,119,127,120.76,120.0,Group by crash_time,300000
+SQLite,ROUND_ROBIN,50,1,363,392,373.54,372.0,Group by crash_time,900000
+SQLite,ROUND_ROBIN,50,1,803,876,827.9,823.5,Group by crash_time,1800000

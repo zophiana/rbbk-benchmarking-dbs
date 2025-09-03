@@ -1,0 +1,13 @@
+DB,Mode,sql,Rows,Min_ms,Max_ms,Avg_ms,Med_ms,query,rows
+HSQLDB,ROUND_ROBIN,"SELECT borough, COUNT(id) AS total_crashes FROM crash_data GROUP BY borough ORDER BY total_crashes DESC;",6,69,123,73.54,71.0,Group by borough,300000
+HSQLDB,ROUND_ROBIN,"SELECT borough, COUNT(id) AS total_crashes FROM crash_data GROUP BY borough ORDER BY total_crashes DESC;",6,444,565,468.9,454.5,Group by borough,1800000
+HSQLDB,ROUND_ROBIN,"SELECT borough, COUNT(id) AS total_crashes FROM crash_data GROUP BY borough ORDER BY total_crashes DESC;",6,206,296,218.22,214.0,Group by borough,900000
+HSQLDB,ROUND_ROBIN,"SELECT borough, COUNT(id) AS total_crashes FROM crash_data GROUP BY borough ORDER BY total_crashes DESC;",6,24,26,24.9,25.0,Group by borough,100000
+Postgres,ROUND_ROBIN,"SELECT borough, COUNT(id) AS total_crashes FROM crash_data GROUP BY borough ORDER BY total_crashes DESC;",6,109,123,116.36,116.0,Group by borough,1800000
+Postgres,ROUND_ROBIN,"SELECT borough, COUNT(id) AS total_crashes FROM crash_data GROUP BY borough ORDER BY total_crashes DESC;",6,57,77,64.6,64.0,Group by borough,900000
+Postgres,ROUND_ROBIN,"SELECT borough, COUNT(id) AS total_crashes FROM crash_data GROUP BY borough ORDER BY total_crashes DESC;",6,24,36,29.72,30.0,Group by borough,300000
+Postgres,ROUND_ROBIN,"SELECT borough, COUNT(id) AS total_crashes FROM crash_data GROUP BY borough ORDER BY total_crashes DESC;",6,14,17,14.48,14.0,Group by borough,100000
+SQLite,ROUND_ROBIN,"SELECT borough, COUNT(id) AS total_crashes FROM crash_data GROUP BY borough ORDER BY total_crashes DESC;",6,44,47,45.04,45.0,Group by borough,100000
+SQLite,ROUND_ROBIN,"SELECT borough, COUNT(id) AS total_crashes FROM crash_data GROUP BY borough ORDER BY total_crashes DESC;",6,1015,1095,1041.0,1028.5,Group by borough,1800000
+SQLite,ROUND_ROBIN,"SELECT borough, COUNT(id) AS total_crashes FROM crash_data GROUP BY borough ORDER BY total_crashes DESC;",6,447,491,462.8,459.5,Group by borough,900000
+SQLite,ROUND_ROBIN,"SELECT borough, COUNT(id) AS total_crashes FROM crash_data GROUP BY borough ORDER BY total_crashes DESC;",6,145,161,149.54,149.0,Group by borough,300000

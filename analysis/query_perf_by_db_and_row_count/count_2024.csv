@@ -1,0 +1,13 @@
+DB,Mode,sql,Rows,Min_ms,Max_ms,Avg_ms,Med_ms,query,rows
+HSQLDB,ROUND_ROBIN,SELECT COUNT(id) AS total_crashes_2024 FROM crash_data WHERE EXTRACT(YEAR FROM crash_date) = 2024;,1,64,117,67.08,66.0,Count 2024,300000
+HSQLDB,ROUND_ROBIN,SELECT COUNT(id) AS total_crashes_2024 FROM crash_data WHERE EXTRACT(YEAR FROM crash_date) = 2024;,1,367,436,383.12,382.0,Count 2024,1800000
+HSQLDB,ROUND_ROBIN,SELECT COUNT(id) AS total_crashes_2024 FROM crash_data WHERE EXTRACT(YEAR FROM crash_date) = 2024;,1,190,289,196.9,194.5,Count 2024,900000
+HSQLDB,ROUND_ROBIN,SELECT COUNT(id) AS total_crashes_2024 FROM crash_data WHERE EXTRACT(YEAR FROM crash_date) = 2024;,1,21,23,21.44,21.0,Count 2024,100000
+Postgres,ROUND_ROBIN,SELECT COUNT(id) AS total_crashes_2024 FROM crash_data WHERE EXTRACT(YEAR FROM crash_date) = 2024;,1,58,66,63.78,64.0,Count 2024,900000
+Postgres,ROUND_ROBIN,SELECT COUNT(id) AS total_crashes_2024 FROM crash_data WHERE EXTRACT(YEAR FROM crash_date) = 2024;,1,105,124,109.92,109.0,Count 2024,1800000
+Postgres,ROUND_ROBIN,SELECT COUNT(id) AS total_crashes_2024 FROM crash_data WHERE EXTRACT(YEAR FROM crash_date) = 2024;,1,15,17,15.2,15.0,Count 2024,100000
+Postgres,ROUND_ROBIN,SELECT COUNT(id) AS total_crashes_2024 FROM crash_data WHERE EXTRACT(YEAR FROM crash_date) = 2024;,1,29,38,31.0,30.5,Count 2024,300000
+SQLite,ROUND_ROBIN,"SELECT COUNT(id) AS total_crashes_2024 FROM crash_data WHERE strftime('%Y', crash_date) = '2024';",1,10,11,10.06,10.0,Count 2024,100000
+SQLite,ROUND_ROBIN,"SELECT COUNT(id) AS total_crashes_2024 FROM crash_data WHERE strftime('%Y', crash_date) = '2024';",1,194,212,200.14,198.5,Count 2024,1800000
+SQLite,ROUND_ROBIN,"SELECT COUNT(id) AS total_crashes_2024 FROM crash_data WHERE strftime('%Y', crash_date) = '2024';",1,32,35,32.58,32.0,Count 2024,300000
+SQLite,ROUND_ROBIN,"SELECT COUNT(id) AS total_crashes_2024 FROM crash_data WHERE strftime('%Y', crash_date) = '2024';",1,97,106,100.48,99.0,Count 2024,900000

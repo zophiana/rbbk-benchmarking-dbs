@@ -1,0 +1,13 @@
+DB,Mode,sql,Rows,Min_ms,Max_ms,Avg_ms,Med_ms,query,rows
+HSQLDB,ROUND_ROBIN,"SELECT id, crash_date, crash_time, (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table FROM crash_data;",900000,430,637,478.64,469.0,Full table select,900000
+HSQLDB,ROUND_ROBIN,"SELECT id, crash_date, crash_time, (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table FROM crash_data;",300000,148,193,161.54,157.0,Full table select,300000
+HSQLDB,ROUND_ROBIN,"SELECT id, crash_date, crash_time, (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table FROM crash_data;",100000,47,56,50.1,50.0,Full table select,100000
+HSQLDB,ROUND_ROBIN,"SELECT id, crash_date, crash_time, (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table FROM crash_data;",1799999,867,1143,962.46,950.5,Full table select,1800000
+Postgres,ROUND_ROBIN,"SELECT id, crash_date, crash_time, (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table FROM crash_data;",900000,332,401,356.78,348.0,Full table select,900000
+Postgres,ROUND_ROBIN,"SELECT id, crash_date, crash_time, (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table FROM crash_data;",1799999,657,943,746.82,731.5,Full table select,1800000
+Postgres,ROUND_ROBIN,"SELECT id, crash_date, crash_time, (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table FROM crash_data;",300000,113,145,122.16,118.5,Full table select,300000
+Postgres,ROUND_ROBIN,"SELECT id, crash_date, crash_time, (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table FROM crash_data;",100000,38,49,39.38,38.0,Full table select,100000
+SQLite,ROUND_ROBIN,"SELECT id, crash_date, crash_time, (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table FROM crash_data;",1799999,326,366,336.18,331.0,Full table select,1800000
+SQLite,ROUND_ROBIN,"SELECT id, crash_date, crash_time, (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table FROM crash_data;",100000,17,19,17.28,17.0,Full table select,100000
+SQLite,ROUND_ROBIN,"SELECT id, crash_date, crash_time, (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table FROM crash_data;",300000,53,59,54.34,54.0,Full table select,300000
+SQLite,ROUND_ROBIN,"SELECT id, crash_date, crash_time, (SELECT COUNT(*) FROM crash_data) AS total_crashes_in_table FROM crash_data;",900000,163,186,169.66,166.5,Full table select,900000
